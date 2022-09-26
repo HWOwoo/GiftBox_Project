@@ -1,0 +1,321 @@
+/* 페이지 제목 */
+.wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 100px;
+    padding-bottom: 100px;
+}
+
+.wrap-center {
+    display: flex;
+    flex-direction: column;
+    align-content: flex-start;
+    width: 900px;
+    padding-left: 100px;
+}
+
+.subjecet{
+    display: flex;
+	width: 200px;
+    height: 60px;
+    background: hsl(34, 57%, 70%);
+    align-items: center;
+    justify-content: center;
+}
+.subjecet span{
+    font-size: 20px;
+    color: white;
+}
+
+/* 아이디 영역 */
+.id_wrap{
+	width:  90%;
+    margin-top: 20px;
+}
+.id_name{
+	font-size: 18px;
+    font-weight: bold;
+}
+.id_input_box{
+	border: 1px solid black;
+	height:31px;
+	padding: 10px 14px;	
+	
+}
+.id_input{
+	width:100%;
+	height:100%;
+	border:none;
+	font-size:18px;
+}
+
+	/* 중복아이디 존재하지 않는경우 */
+	.id_input_re_1{
+		color : green;
+		display : none;
+	}
+	/* 중복아이디 존재하는 경우 */
+	.id_input_re_2{
+		color : red;
+		display : none;
+	}
+
+/* 비밀번호 영역 */
+.pw_wrap{
+	width: 90%;
+    margin-top: 20px;
+}
+.pw_name{
+	font-size: 18px;
+    font-weight: bold;
+}
+.pw_input_box{
+	border: 1px solid black;
+	height:31px;
+	padding: 10px 14px;	
+	
+}
+.pw_input{
+	width:100%;
+	height:100%;
+	border:none;
+	font-size:18px;
+}
+
+/* 비밀번호 확인 영역 */
+.pwck_wrap{
+	width: 90%;
+    margin-top: 20px;
+}
+.pwck_name{
+	font-size: 18px;
+    font-weight: bold;
+}
+.pwck_input_box{
+	border: 1px solid black;
+	height:31px;
+	padding: 10px 14px;	
+	
+}
+.pwck_input{
+	width:100%;
+	height:100%;
+	border:none;
+	font-size:18px;
+}
+
+/* 이름 영역 */
+.user_wrap{
+	width: 90%;
+    margin-top: 20px;
+}
+.user_name{
+	font-size: 18px;
+    font-weight: bold;
+}
+.user_input_box{
+	border: 1px solid black;
+	height:31px;
+	padding: 10px 14px;	
+	
+}
+.user_input{
+	width:100%;
+	height:100%;
+	border:none;
+	font-size:18px;
+}
+
+/* 메일 영역 */
+.mail_wrap{
+	width: 90%;
+    margin-top: 20px;
+}
+.mail_name{
+	font-size: 18px;
+    font-weight: bold;
+}
+.mail_input_box{
+	border: 1px solid black;
+	height:31px;
+	padding: 10px 14px;	
+	
+}
+.mail_input{
+	width:100%;
+	height:100%;
+	border:none;
+	font-size:18px;
+}
+.mail_check_wrap{
+	margin-top: 20px;	
+}
+.mail_check_input_box{
+	border: 1px solid black;
+    height: 31px;
+    padding: 10px 14px;
+    width: 61%;
+    float: left;
+}
+.mail_check_input{
+	width:100%;
+	height:100%;
+	border:none;
+	font-size:18px;
+}
+.mail_check_button{
+    border: 1px solid white;
+    height: 51px;
+    width: 30%;
+    float: right;
+    line-height: 50px;
+    text-align: center;
+    font-size: 18px;
+    background-color: hsl(34, 57%, 70%);
+	color: white;
+    cursor: pointer;
+}
+
+#mail_check_input_box_false{
+    background-color:#ebebe4;
+}
+ 
+#mail_check_input_box_true{
+    background-color:white;
+}
+ 
+
+/* 주소 영역 */
+.address_wrap{
+	width: 90%;
+    margin-top: 20px;
+}
+.address_name{
+	font-size: 18px;
+    font-weight: bold;
+}
+.address_input_1_box{
+	border: 1px solid black;
+    height: 31px;
+    padding: 10px 14px;
+    width: 61%;
+    float: left;	
+}
+.address_input_1{
+	width:100%;
+	height:100%;
+	border:none;
+	font-size:18px;	
+}
+.address_button{
+    border: 1px solid white;
+    height: 51px;
+    width: 30%;
+    float: right;
+    line-height: 50px;
+    text-align: center;
+    font-size: 18px;
+    background-color: hsl(34, 57%, 70%);
+	color: white;
+    cursor: pointer;
+}
+.address_input_2_wrap{
+	margin-top: 20px;
+}
+.address_input_2_box{
+	border: 1px solid black;
+	height:31px;
+	padding: 10px 14px;	
+	
+}
+.address_input_2{
+	width:100%;
+	height:100%;
+	border:none;
+	font-size:18px;
+}
+
+.address_input_3_wrap{
+	margin-top: 20px;
+}
+.address_input_3_box{
+	border: 1px solid black;
+	height:31px;
+	padding: 10px 14px;	
+	
+}
+.address_input_3{
+	width:100%;
+	height:100%;
+	border:none;
+	font-size:18px;
+}
+
+
+ 
+/* 유효성 검사 문구 */
+ 
+.final_id_ck{
+    display: none;
+    color : red;
+}
+.final_pw_ck{
+    display: none;
+	color : red;
+}
+.final_pwck_ck{
+    display: none;
+    color : red;
+}
+.final_name_ck{
+    display: none;
+    color : red;
+}
+.final_mail_ck{
+    display: none;
+    color : red;
+}
+.final_addr_ck{
+    display: none;
+    color : red;
+}
+
+
+ 
+/* 비밀번호 확인 일치 유효성검사 */
+.pwck-input-re-1{
+        color : green;
+        display : none;    
+}
+.pwck-input-re-2{
+        color : red;
+        display : none;    
+}  
+
+/* 가입하기 버튼 */
+.join_button_wrap{
+	margin-top: 40px;
+	text-align: center;
+}
+.join_button{
+	width: 400px;
+    height: 70px;
+    border: 0px;
+    background: hsl(34, 57%, 70%);
+    outline: none;
+    float: right;
+    color: #ffffff;
+    
+
+}
+
+/* float 속성 해제 */
+.clearfix{
+	clear: both;
+}
+
+.join-agree {
+    width: 800px;
+    height: 900px;
+}

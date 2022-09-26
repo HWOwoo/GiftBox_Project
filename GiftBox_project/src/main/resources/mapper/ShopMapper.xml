@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="edu.hi.mapper.ShopMapper">
+  
+      <!-- 가게 등록 -->
+      <insert id="shopEnroll">
+      
+          insert into shop_author(shopId,shopName, nationId, shopIntro) values(NO_SEQ.NEXTVAL,#{shopName}, #{nationId}, #{shopIntro} )
+ 
+      </insert>	
+
+      <!-- 가게 목록 -->
+      <select id="shopGetList" resultType="edu.hi.model.ShopVO">
+        
+  	<![CDATA[
+	  	select * from (
+	  		select /*+INDEX_DESC(shop_author SYS_C007424) */ 
+	  			rownum as rn, shopid, shopname, nationid, updatedate, regdate
+			from shop_author 
+			where
+			 
+	]]>		 
+			<if test="keyword != null">
+				shopname like '%'||#{keyword}||'%' and
+			</if>
+			
+	<![CDATA[		
+			 rownum <= #{pageNum}*#{amount}
+			)
+		where rn > (#{pageNum} - 1) * #{amount}
+  	]]>
+  	
+  	</select>
+
+    <!-- 가게 수 -->
+    <select id="shopGetTotal" resultType="int">
+      
+          select count(*) from shop_author
+          
+        <if test="keyword != null">
+          
+             where shopname like '%' || #{keyword} || '%'
+          
+        </if>
+          
+    </select>   
+      
+  	<!-- 가게 디테일 페이지 -->
+  	<select id="shopGetDetail" resultType="edu.hi.model.ShopVO">
+  	
+  		select * from shop_author where shopid = #{shopId}
+  	
+  	</select> 
+  	
+  	<!-- 가게 정보 수정 -->
+  	<update id="shopModify">
+  	
+  		update shop_author set shopName=#{shopName}, nationId=#{nationId}, shopIntro=#{shopIntro}, updatedate=sysdate where shopId = #{shopId}
+  	
+  	</update>  	         
+
+      
+  </mapper>

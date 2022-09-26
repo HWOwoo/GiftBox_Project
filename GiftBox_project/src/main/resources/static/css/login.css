@@ -1,0 +1,178 @@
+* {
+    list-style: none;
+    text-decoration: none;
+}
+
+:root{
+	--body-background-color: #f5f6f7;
+	--font-color: #4e4e4e;
+	--border-gray-color : #dadada;
+	--naver-green-color: #deb887;
+	--naver-green-border-color: #deb887;
+}
+
+header {
+    position: fixed;
+    cursor: pointer;
+    width: 100%;
+    top: 0;
+    left: 0;
+    padding: 0 20px;
+    background-color: white;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    font-size: 5vh;
+}
+
+header nav {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header ul {
+    display: flex;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+header li {
+    margin-right: 70px;
+}
+
+.login_form {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #deb887;
+    width: 350px;
+    height: 100px;
+    padding-left: 20px;
+}
+
+.login_button {
+    justify-content: flex-end;
+    
+}
+
+.main-container{
+	
+	width:100%;
+	display:flex;
+	flex-direction:column;
+	align-items:center;
+	margin-top: 10%;
+}
+.main-container .main-wrap{
+	width:768px;
+
+}
+.main-container .main-wrap .sel-lang-wrap .lang-select
+{
+	width: 96px;
+	height: 30px;
+	color: var(--font-color);
+	border: solid 1px var(--border-gray-color);
+}
+.main-container .main-wrap .logo-wrap{
+	padding-top:55px;
+}
+.main-container .main-wrap .logo-wrap img
+{
+	width: 231px;
+	height: 44px;
+}
+
+.main-container .main-wrap header .sel-lang-wrap{
+	display:flex;
+	justify-content:flex-end;
+}
+
+.main-container .main-wrap header .logo-wrap{
+	display:flex;	
+	flex-direction: column;
+	align-items: center;
+}
+.login-input-section-wrap{
+	padding-top: 60px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.login-input-wrap{
+	width: 465px;
+	height :48px;
+	border: solid 1px var(	--border-gray-color );
+	background: white;
+}
+.password-wrap{
+	margin-top: 13px;
+}
+.login-input-wrap input{
+	border: none;
+	width:430px;
+	margin-top: 10px;
+	font-size: 14px;
+	margin-left: 10px;
+	height:30px;
+}
+.login-button-wrap {
+	padding-top: 13px;
+}
+.login-button-wrap input{
+	width: 465px;
+	height :48px;
+    cursor: pointer;
+	font-size: 18px;
+	background: var(--naver-green-color);
+	color: white;
+	border: solid 1px var(--naver-green-border-color);
+}
+.login-stay-sign-in{
+	width: 465px;
+	height: 52px;
+	
+	display: flex;
+	font-size: 15px;
+	color: #4e4e4e;
+	align-items: center;
+	justify-content: flex-start;
+	border-bottom: solid 1px var(--border-gray-color);
+}
+.login-stay-sign-in i{
+	font-size: 25px;
+	color: #9ba1a3;
+}
+.login-stay-sign-in span{
+	padding-left: 5px;
+	line-height: 25px;
+}
+
+/* 로그인 실패시 경고글 */
+.login_warn{
+    margin-top: 30px;
+    margin-bottom: 10px;
+    text-align: center;
+    color : red;
+}
+
+.regist-button {
+	padding-top: 13px;
+}
+.regist-button button{
+	width: 230px;
+	height :48px;
+    cursor: pointer;
+	font-size: 18px;
+	background: var(--naver-green-color);
+	color: white;
+	border: solid 1px var(--naver-green-border-color);
+}
+
+.regist-button a {
+	text-decoration: none;
+	color : white;
+}
