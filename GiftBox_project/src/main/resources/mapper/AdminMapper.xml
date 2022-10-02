@@ -4,12 +4,86 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="edu.hi.mapper.AdminMapper">
   
-    	<!-- 작가 등록 -->
+    <!-- 작가 등록 -->
   	<insert id="giftEnroll">
   	
   		insert into gift_product(giftId,giftName, shopId, publeYear, publisher, cateCode, giftPrice, giftStock, giftDiscount, giftIntro, giftContents)
 		values(NO_PRODUCT.NEXTVAL,#{giftName},#{shopId}, #{publeYear},#{publisher},#{cateCode},#{giftPrice},#{giftStock},#{giftDiscount},#{giftIntro},#{giftContents})
 
   	</insert>
+  
+    <!-- 카테고리 리스트 -->
+  	<select id="cateList" resultType="edu.hi.model.CateVO">
+  	
+  		select * from gift_bcate order by catecode
+  	
+  	</select>
+  
+ 	<!-- 상품 리스트 -->
+  	<select id="goodsGetList" resultType="edu.hi.model.GiftVO">
+  	
+	  	<![CDATA[
+		select * from(
+		    select /*+INDEX_DESC(gift_product SYS_C007481)*/ rownum as rn, giftId, giftName,
+		        (select shopName from shop_author where gift_product.shopId = shop_author.shopId) shopName,
+		        (select cateName from gift_bcate where gift_product.cateCode = gift_bcate.cateCode) cateName,giftStock,regDate
+		    from gift_product 
+		    where 
+		]]>    
+		
+		    <if test="keyword != null">
+		    
+			    giftName like '%' || #{keyword} || '%' and
+			    
+		    </if>
+		     
+		<![CDATA[    
+		    rownum <= #{pageNum} * #{amount} 
+		    )
+		where rn > (#{pageNum} -1) * #{amount}		  	
+  		]]>
+  	
+  	</select>
+  	
+  	<!-- 상품 총 개수 -->
+  	<select id="goodsGetTotal" resultType="int">
+  	
+  		select count(*) from gift_product
+  		
+  		<if test="keyword != null">
+  		
+  			where giftName like '%' || #{keyword} || '%'
+  		</if>
+  		
+  	</select>   
+  	
+  	
+  	
+  	<!-- 상품 조회 페이지 -->
+	<select id="goodsGetDetail" resultType="edu.hi.model.GiftVO">
+	
+		select giftId, giftName, (select shopName from shop_author where shopId = gift_product.shopId) shopName, 
+			shopId, publeYear, publisher, cateCode, giftPrice, giftStock, giftDiscount, giftIntro, giftContents, regDate, updateDate 
+		from gift_product where giftId = #{giftId}
+	
+	</select>
+	
+	<!-- 상품 정보 수정 -->
+	<update id="goodsModify">
+		
+		update gift_product set giftName = #{giftName}, shopId = #{shopId}, publeYear = #{publeYear}, publisher = #{publisher}, cateCode = ${cateCode}, 
+		giftPrice = #{giftPrice}, giftStock = #{giftStock}, giftDiscount = #{giftDiscount}, giftIntro = #{giftIntro}, giftContents = #{giftContents}, updateDate = sysdate
+		where giftId = ${giftId}
+		
+	</update>
+	
+	<!-- 상품 정보 삭제 -->
+	<delete id="goodsDelete">
+	
+		delete from gift_product where giftId = #{giftId}
+	
+	</delete>
+  	
+  	
   
   </mapper>

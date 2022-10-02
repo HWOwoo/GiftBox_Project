@@ -6,32 +6,47 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import edu.hi.model.ShopVO;
+import edu.hi.model.GiftVO;
 
 @SpringBootTest
 class BoardListTest {
 	
 	 private static final Logger log = LoggerFactory.getLogger(BoardListTest.class);
-	 
-	 @Autowired
-	 private ShopMapper mapper;
 
-
+		@Autowired
+		private AdminMapper mapper;
+		
+//		@Test
+//		public void goodsGetListTest() {
+//				
+//			Criteria cri = new Criteria();
+//			
+//			/* 검색조건 */
+//			cri.setKeyword("테스트");
+//			
+//			/* 검색 리스트 */
+//			List list = mapper.goodsGetList(cri);
+//			for(int i = 0; i < list.size(); i++) {
+//				System.out.println("result......." + i + " : " + list.get(i));
+//			}
+			
+//			/* 상품 총 갯수 */
+//			int result = mapper.goodsGetTotal(cri);
+//			System.out.println("resutl.........." + result);
+			
+		/* 상품 조회 페이지 */
 		@Test
-		public void authorModifyTest() {
+		public void goodsGetDetailTest() {
 			
-			ShopVO shop = new ShopVO();
-					
-			shop.setShopId(7);
-			System.out.println("수정 전...................." + mapper.shopGetDetail(shop.getShopId()));
+			int giftId = 61;
 			
-			shop.setShopName("수정");
-			shop.setNationId("01");
-			shop.setShopIntro("소개 수정 하였습니다.");
+			GiftVO result = mapper.goodsGetDetail(giftId);
 			
-			mapper.shopModify(shop);
-			System.out.println("수정 후...................." + mapper.shopGetDetail(shop.getShopId()));
+			System.out.println("상품 조회 데이터 : " + result);
+			
 			
 		}
 
+
 }
+

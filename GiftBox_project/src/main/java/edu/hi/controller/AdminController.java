@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import edu.hi.model.Criteria;
 import edu.hi.model.GiftVO;
 import edu.hi.model.PageDTO;
@@ -40,16 +42,43 @@ public class AdminController {
         
     }
     
-    /** 상품 등록 페이지 접속 */
-    @RequestMapping(value = "goodsManage", method = RequestMethod.GET)
-    public void goodsManageGET() throws Exception{
-        logger.info("상품 등록 페이지 접속");
-    }
+	/** 상품 관리(상품목록) 페이지 접속 */
+	@RequestMapping(value = "goodsManage", method = RequestMethod.GET)
+	public void goodsManageGET(Criteria cri, Model model) throws Exception{
+	
+		/** 상품 리스트 데이터 */
+		List list = adminService.goodsGetList(cri);
+		
+		if(!list.isEmpty()) {
+			model.addAttribute("list", list);
+		} else {
+			model.addAttribute("listCheck", "empty");
+			return;
+		}
+		
+		/** 페이지 인터페이스 데이터 */
+		model.addAttribute("pageMaker", new PageDTO(cri, adminService.goodsGetTotal(cri)));
+		
+
+	}
     
     /** 상품 등록 페이지 접속 */
     @RequestMapping(value = "goodsEnroll", method = RequestMethod.GET)
-    public void goodsEnrollGET() throws Exception{
+    public void goodsEnrollGET(Model model) throws Exception{
+    	
         logger.info("상품 등록 페이지 접속");
+        
+        ObjectMapper objm = new ObjectMapper();
+        
+        List list = adminService.cateList();
+        
+        String cateList = objm.writeValueAsString(list);
+        
+        model.addAttribute("cateList", cateList);
+        
+		logger.info("변경 전.........." + list);
+		logger.info("변경 후.........." + cateList);
+		
     }
     
     /** 가게 등록 페이지 접속 */
@@ -67,9 +96,9 @@ public class AdminController {
         List list = shopService.shopGetList(cri);
         
 		if(!list.isEmpty()) {
-			model.addAttribute("list",list);	// 작가 존재 경우
+			model.addAttribute("list",list);	// 가게 존재 경우
 		} else {
-			model.addAttribute("listCheck", "empty");	// 작가 존재하지 않을 경우
+			model.addAttribute("listCheck", "empty");	// 가게 존재하지 않을 경우
 		} 
         
         /** 페이지 이동 인터페이스 데이터 */
@@ -86,7 +115,7 @@ public class AdminController {
      
             logger.info("shopEnroll :" +  shop);
             
-            shopService.shopEnroll(shop);      // 작가 등록 쿼리 수행
+            shopService.shopEnroll(shop);      // 가게 등록 쿼리 수행
             
             rttr.addFlashAttribute("shop_result", shop.getShopName());
             
@@ -159,5 +188,76 @@ public class AdminController {
 		model.addAttribute("pageMaker", new PageDTO(cri, shopService.shopGetTotal(cri)));			
 		
 	}
+	
+	/** 상품 조회 페이지 */
+	@GetMapping({"/goodsDetail", "/goodsModify"})
+	public void goodsGetInfoGET(int giftId, Criteria cri, Model model) {
+		
+		logger.info("goodsGetInfo()........." + giftId);
+		
+		/** 목록 페이지 조건 정보 */
+		model.addAttribute("cri", cri);
+		
+		/** 조회 페이지 정보 */
+		model.addAttribute("goodsInfo", adminService.goodsGetDetail(giftId));
+		
+	}
+
+	/** 상품 정보 수정 */
+	@PostMapping("/goodsModify")
+	public String goodsModifyPOST(GiftVO vo, RedirectAttributes rttr) {
+		
+		logger.info("goodsModifyPOST.........." + vo);
+		
+		int result = adminService.goodsModify(vo);
+		
+		rttr.addFlashAttribute("modify_result", result);
+		
+		return "redirect:/admin/goodsManage";		
+		
+	}
+	
+	/** 상품 정보 삭제 */
+	@PostMapping("/goodsDelete")
+	public String goodsDeletePOST(int giftId, RedirectAttributes rttr) {
+		
+		logger.info("goodsDeletePOST..........");
+		
+		int result = adminService.goodsDelete(giftId);
+		
+		rttr.addFlashAttribute("delete_result", result);
+		
+		return "redirect:/admin/goodsManage";
+		
+	}
+	
+	/** 작가 정보 삭제 */
+	@PostMapping("/shopDelete")
+	public String shopDeletePOST(int shopId, RedirectAttributes rttr) {
+		
+		logger.info("authorDeletePOST..........");
+		
+		int result = 0;
+		
+		try {
+			
+			result = shopService.shopDelete(shopId);
+			
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			result = 2;
+			rttr.addFlashAttribute("delete_result", result);
+			
+			return "redirect:/admin/authorManage";
+				
+		}
+		
+		
+		rttr.addFlashAttribute("delete_result", result);
+		
+		return "redirect:/admin/authorManage";
+		
+	}	
     
 }

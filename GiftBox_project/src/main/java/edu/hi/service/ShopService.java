@@ -21,5 +21,8 @@ public interface ShopService {
 	
     /** 가게 정보 수정 */
 	public int shopModify(ShopVO shop) throws Exception;
+	
+	/** 작가 정보 삭제 */
+	public int shopDelete(int shopId);
     
 }

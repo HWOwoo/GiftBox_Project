@@ -65,6 +65,15 @@ public class ShopServiceImpl implements ShopService {
 		return shopMapper.shopModify(shop);
 		
 	}
+	
+	/** 가게 정보 삭제 */
+	@Override
+	public int shopDelete(int shopId) {
+		
+		log.info("authorDelete..........");
+		
+		return shopMapper.shopDelete(shopId);
+	}
     
     
 }

@@ -1,38 +1,42 @@
 package edu.hi.mapper;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import edu.hi.model.GiftVO;
+import edu.hi.model.Criteria;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/resources/applicationContext.xml")
 public class MemberMapperTests {
 	
+	
 	@Autowired
 	private AdminMapper mapper;
 	
-	/* 상품 등록 */
 	@Test
-	public void giftEnrollTest() throws Exception{
+	public void goodsGetListTest() {
+			
+		Criteria cri = new Criteria();
 		
-		GiftVO gift = new GiftVO();
+//		/* 검색조건 */
+//		cri.setKeyword("테스트");
+//		
+//		/* 검색 리스트 */
+//		List list = mapper.goodsGetList(cri);
+//		for(int i = 0; i < list.size(); i++) {
+//			System.out.println("result......." + i + " : " + list.get(i));
+//		}
 		
-		gift.setGiftName("mapper 테스트");
-		gift.setShopId(123);
-		gift.setPubleYear("2021-03-18");
-		gift.setPublisher("출판사");
-		gift.setCateCode("0231");
-		gift.setGiftPrice(20000);
-		gift.setGiftStock(300);
-		gift.setGiftDiscount(0.23);
-		gift.setGiftIntro("책 소개 ");
-		gift.setGiftContents("책 목차 ");
+		/* 상품 총 갯수 */
+		int result = mapper.goodsGetTotal(cri);
+		System.out.println("resutl.........." + result);
 		
-		mapper.giftEnroll(gift);
+		
 	}
 	
 	

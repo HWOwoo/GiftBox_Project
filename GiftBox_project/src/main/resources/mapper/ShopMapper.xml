@@ -59,7 +59,14 @@
   	
   		update shop_author set shopName=#{shopName}, nationId=#{nationId}, shopIntro=#{shopIntro}, updatedate=sysdate where shopId = #{shopId}
   	
-  	</update>  	         
+  	</update>  	       
+  	
+  	 <!-- 가게 정보 삭제 -->
+  	<delete id="authorDelete">
+  	
+  		delete from shop_author where shopId = #{shopId}
+  	
+  	</delete>  
 
       
   </mapper>

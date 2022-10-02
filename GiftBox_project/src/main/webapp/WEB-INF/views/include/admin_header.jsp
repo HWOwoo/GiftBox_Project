@@ -48,6 +48,6 @@
                       <a class="admin_list_05">회원 관리</a>                            
                   </li>                                                                                             
               </ul>
-
+</div>
 </body>
 </html>

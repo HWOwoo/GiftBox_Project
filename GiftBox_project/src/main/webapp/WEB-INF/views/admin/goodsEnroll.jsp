@@ -71,6 +71,7 @@
                     			</div>
                     			<div class="form_section_content">
                     				<input name="giftName">
+                    				<span class="ck_warn giftName_warn">상품 이름을 입력해주세요.</span>
                     			</div>
                     		</div>
                     		<div class="form_section">
@@ -81,6 +82,7 @@
 									<input id="shopName_input" readonly="readonly">
 									<input id="shopId_input" name="shopId" type="hidden">
 									<button class="shopId_btn">가게 선택</button>
+									<span class="ck_warn shopId_warn">가게를 선택해주세요</span>
                     			</div>
                     		</div>            
                     		<div class="form_section">
@@ -89,6 +91,7 @@
                     			</div>
                     			<div class="form_section_content">
                     				<input name="publeYear" autocomplete="off" readonly="readonly">
+                    				<span class="ck_warn publeYear_warn">판매시작일을 선택해주세요.</span>
                     			</div>
                     		</div>            
                     		<div class="form_section">
@@ -97,6 +100,7 @@
                     			</div>
                     			<div class="form_section_content">
                     				<input name="publisher">
+                    				<span class="ck_warn publisher_warn">제작사를 입력해주세요.</span>
                     			</div>
                     		</div>             
                     		<div class="form_section">
@@ -104,7 +108,25 @@
                     				<label>카테고리</label>
                     			</div>
                     			<div class="form_section_content">
-                    				<input name="cateCode">
+                    				<div class="cate_wrap">
+										<span>대분류</span>
+										<select class="cate1">
+											<option selected value="none">선택</option>
+										</select>
+									</div>
+									<div class="cate_wrap">
+										<span>중분류</span>
+										<select class="cate2">
+											<option selected value="none">선택</option>
+										</select>
+									</div>
+									<div class="cate_wrap">
+										<span>소분류</span>
+										<select class="cate3" name="cateCode">
+											<option selected value="none">선택</option>
+										</select>
+									</div> 
+									<span class="ck_warn cateCode_warn">카테고리를 선택해주세요.</span> 
                     			</div>
                     		</div>          
                     		<div class="form_section">
@@ -113,6 +135,7 @@
                     			</div>
                     			<div class="form_section_content">
                     				<input name="giftPrice" value="0">
+                    				<span class="ck_warn giftPrice_warn">상품 가격을 입력해주세요.</span>
                     			</div>
                     		</div>               
                     		<div class="form_section">
@@ -121,6 +144,7 @@
                     			</div>
                     			<div class="form_section_content">
                     				<input name="giftStock" value="0">
+                    				<span class="ck_warn giftStock_warn">상품 재고를 입력해주세요.</span>
                     			</div>
                     		</div>          
                     		<div class="form_section">
@@ -128,7 +152,10 @@
                     				<label>상품 할인율</label>
                     			</div>
                     			<div class="form_section_content">
-                    				<input name="giftDiscount" value="0">
+                    				<input id="discount_interface" maxlength="2" value="0">
+									<input name="giftDiscount" type="hidden" value="0">
+									<span class="step_val">할인 가격 : <span class="span_discount"></span></span>
+									<span class="ck_warn bookDiscount_warn">1~99 숫자를 입력해주세요.</span>
                     			</div>
                     		</div>          		
                     		<div class="form_section">
@@ -137,6 +164,7 @@
                     			</div>
                     			<div class="form_section_content">
                     				<textarea name="giftIntro" id="giftIntro_textarea"></textarea>
+                    				<span class="ck_warn giftIntro_warn">가게 소개를 입력해주세요.</span>
                     			</div>
                     		</div>        		
                     		<div class="form_section">
@@ -145,6 +173,7 @@
                     			</div>
                     			<div class="form_section_content">
                     				<textarea name="giftContents" id="giftContents_textarea"></textarea>
+                    				<span class="ck_warn giftContents_warn">가게 설명을 입력해주세요.</span>
                     			</div>
                     		</div>
                    		</form>
@@ -205,7 +234,117 @@ $("#enrollBtn").on("click",function(e){
 	
 	e.preventDefault();
 	
-	enrollForm.submit();
+	/* 체크 변수 */
+	let giftNameCk = false;
+	let shopIdCk = false;
+	let publeYearCk = false;
+	let publisherCk = false;
+	let cateCodeCk = false;
+	let priceCk = false;
+	let stockCk = false;
+	let discountCk = false;
+	let introCk = false;
+	let contentsCk = false;
+	
+	/* 체크 대상 변수 */
+	let giftName = $("input[name='giftName']").val();
+	let shopId = $("input[name='shopId']").val();
+	let publeYear = $("input[name='publeYear']").val();
+	let publisher = $("input[name='publisher']").val();
+	let cateCode = $("select[name='cateCode']").val();
+	let giftPrice = $("input[name='giftPrice']").val();
+	let giftStock = $("input[name='giftStock']").val();
+	let giftDiscount = $("#discount_interface").val();
+	let giftIntro = $(".bit p").html();
+	let giftContents = $(".bct p").html();
+	
+	
+	if(giftName){
+		$(".giftName_warn").css('display','none');
+		giftNameCk = true;
+	} else {
+		$(".giftName_warn").css('display','block');
+		giftNameCk = false;
+	}
+	
+	if(shopId){
+		$(".shopId_warn").css('display','none');
+		shopIdCk = true;
+	} else {
+		$(".shopId_warn").css('display','block');
+		shopIdCk = false;
+	}
+	
+	if(publeYear){
+		$(".publeYear_warn").css('display','none');
+		publeYearCk = true;
+	} else {
+		$(".publeYear_warn").css('display','block');
+		publeYearCk = false;
+	}	
+	
+	if(publisher){
+		$(".publisher_warn").css('display','none');
+		publisherCk = true;
+	} else {
+		$(".publisher_warn").css('display','block');
+		publisherCk = false;
+	}
+	
+	if(cateCode != 'none'){
+		$(".cateCode_warn").css('display','none');
+		cateCodeCk = true;
+	} else {
+		$(".cateCode_warn").css('display','block');
+		cateCodeCk = false;
+	}	
+	
+	if(giftPrice != 0){
+		$(".giftPrice_warn").css('display','none');
+		priceCk = true;
+	} else {
+		$(".giftPrice_warn").css('display','block');
+		priceCk = false;
+	}	
+	
+	if(giftStock != 0){
+		$(".giftStock_warn").css('display','none');
+		stockCk = true;
+	} else {
+		$(".giftStock_warn").css('display','block');
+		stockCk = false;
+	}		
+	
+	if(!isNaN(giftDiscount)){
+		$(".giftDiscount_warn").css('display','none');
+		discountCk = true;
+	} else {
+		$(".giftDiscount_warn").css('display','block');
+		discountCk = false;
+	}	
+	
+	if(giftIntro != '<br data-cke-filler="true">'){
+		$(".giftIntro_warn").css('display','none');
+		introCk = true;
+	} else {
+		$(".giftIntro_warn").css('display','block');
+		introCk = false;
+	}	
+	
+	if(giftContents != '<br data-cke-filler="true">'){
+		$(".giftContents_warn").css('display','none');
+		contentsCk = true;
+	} else {
+		$(".giftContents_warn").css('display','block');
+		contentsCk = false;
+	}	
+	
+	if(giftNameCk && shopIdCk && publeYearCk && publisherCk && cateCodeCk && priceCk && stockCk && discountCk && introCk && contentsCk ){
+		//alert('통과');
+		enrollForm.submit();
+	} else {
+		return false;
+	}
 	
 });
 
@@ -261,6 +400,134 @@ $("#enrollBtn").on("click",function(e){
 		window.open(popUrl,"가게 찾기",popOption);
 		
 	});	
+
+	/*
+	$(document).ready(function(){
+		console.log('${cateList}');
+	});
+	*/
+	
+	/* 카테고리 */
+	let cateList = JSON.parse('${cateList}');
+	
+	let cate1Array = new Array();
+	let cate2Array = new Array();
+	let cate3Array = new Array();
+	let cate1Obj = new Object();
+	let cate2Obj = new Object();
+	let cate3Obj = new Object();
+	
+	let cateSelect1 = $(".cate1");		
+	let cateSelect2 = $(".cate2");
+	let cateSelect3 = $(".cate3");
+	
+	/* 카테고리 배열 초기화 메서드 */
+	function makeCateArray(obj,array,cateList, tier){
+		for(let i = 0; i < cateList.length; i++){
+			if(cateList[i].tier === tier){
+				obj = new Object();
+				
+				obj.cateName = cateList[i].cateName;
+				obj.cateCode = cateList[i].cateCode;
+				obj.cateParent = cateList[i].cateParent;
+				
+				array.push(obj);				
+				
+			}
+		}
+	}	
+	
+	/* 배열 초기화 */
+	makeCateArray(cate1Obj,cate1Array,cateList,1);
+	makeCateArray(cate2Obj,cate2Array,cateList,2);
+	makeCateArray(cate3Obj,cate3Array,cateList,3);
+	
+	/*
+	$(document).ready(function(){
+		console.log(cate1Array);
+		console.log(cate2Array);
+		console.log(cate3Array);
+	});
+	*/
+	
+	/** 대분류 <option> 태그 */
+	for(let i = 0; i < cate1Array.length; i++){
+		cateSelect1.append("<option value='"+cate1Array[i].cateCode+"'>" + cate1Array[i].cateName + "</option>");
+	}
+	
+	/** 중분류 <option> 태그 */
+	$(cateSelect1).on("change",function(){
+		
+		let selectVal1 = $(this).find("option:selected").val();	
+		
+		cateSelect2.children().remove();
+		cateSelect3.children().remove();
+		
+		cateSelect2.append("<option value='none'>선택</option>");
+		cateSelect3.append("<option value='none'>선택</option>");
+		
+		for(let i = 0; i < cate2Array.length; i++){
+			if(selectVal1 === cate2Array[i].cateParent){
+				cateSelect2.append("<option value='"+cate2Array[i].cateCode+"'>" + cate2Array[i].cateName + "</option>");	
+			}
+		}// for
+		
+	});
+	
+	/** 소분류 <option>태그 */
+	$(cateSelect2).on("change",function(){
+		
+		let selectVal2 = $(this).find("option:selected").val();
+		
+		cateSelect3.children().remove();
+		
+		cateSelect3.append("<option value='none'>선택</option>");		
+		
+		for(let i = 0; i < cate3Array.length; i++){
+			if(selectVal2 === cate3Array[i].cateParent){
+				cateSelect3.append("<option value='"+cate3Array[i].cateCode+"'>" + cate3Array[i].cateName + "</option>");	
+			}
+		}// for		
+		
+	});	
+	
+	/** 할인율 Input 설정 */
+	$("#discount_interface").on("propertychange change keyup paste input", function(){
+		
+		let userInput = $("#discount_interface");
+		let discountInput = $("input[name='giftDiscount']");
+		
+		let discountRate = userInput.val();					// 사용자가 입력할 할인값
+		let sendDiscountRate = discountRate / 100;					// 서버에 전송할 할인값
+		let goodsPrice = $("input[name='giftPrice']").val();			// 원가
+		let discountPrice = goodsPrice * (1 - sendDiscountRate);		// 할인가격
+		   
+		if(!isNaN(discountRate)){
+			
+		$(".span_discount").html(discountPrice);
+		discountInput.val(sendDiscountRate);	
+		
+		}
+		
+	});	
+	
+	$("input[name='giftPrice']").on("change", function(){
+		
+		let userInput = $("#discount_interface");
+		let discountInput = $("input[name='giftDiscount']");
+		
+		let discountRate = userInput.val();					// 사용자가 입력한 할인값
+		let sendDiscountRate = discountRate / 100;			// 서버에 전송할 할인값
+		let goodsPrice = $("input[name='giftPrice']").val();			// 원가
+		let discountPrice = goodsPrice * (1 - sendDiscountRate);		// 할인가격
+		
+		if(!isNaN(discountRate)){
+		
+		$(".span_discount").html(discountPrice);
+		
+		}
+		
+	});
 	
 </script> 
  

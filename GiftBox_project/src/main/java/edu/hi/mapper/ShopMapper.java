@@ -24,5 +24,8 @@ public interface ShopMapper {
 	
 	/** 가게 정보 수정 */
 	public int shopModify(ShopVO shop);	
+	
+	/** 가게 정보 삭제 */
+	public int shopDelete(int shopId);
     
 }
