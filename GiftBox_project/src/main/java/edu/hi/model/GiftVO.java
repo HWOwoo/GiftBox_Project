@@ -1,6 +1,7 @@
 package edu.hi.model;
 
 import java.util.Date;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -58,5 +59,8 @@ public class GiftVO {
 	
 	/** 수정 날짜 */
 	private Date updateDate;
+	
+	/** 이미지 정보 */
+	private List<AttachImageVO> imageList;
 	
 }

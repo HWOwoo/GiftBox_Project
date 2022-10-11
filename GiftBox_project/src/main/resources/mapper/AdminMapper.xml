@@ -7,6 +7,12 @@
     <!-- 작가 등록 -->
   	<insert id="giftEnroll">
   	
+  		<selectKey resultType="int" keyProperty="giftId" order="AFTER">
+  		
+  			SELECT MAX(giftId) FROM gift_product
+  		
+  		</selectKey>  	
+  	
   		insert into gift_product(giftId,giftName, shopId, publeYear, publisher, cateCode, giftPrice, giftStock, giftDiscount, giftIntro, giftContents)
 		values(NO_PRODUCT.NEXTVAL,#{giftName},#{shopId}, #{publeYear},#{publisher},#{cateCode},#{giftPrice},#{giftStock},#{giftDiscount},#{giftIntro},#{giftContents})
 
@@ -84,6 +90,18 @@
 	
 	</delete>
   	
-  	
+  	<!-- 이미지 등록 -->
+	<insert id="imageEnroll">
+	
+		insert into gift_image(giftId, fileName, uploadPath, uuid) values (#{giftId}, #{fileName}, #{uploadPath}, #{uuid})
+	
+	</insert>
+  
+  	<!-- 지정 상품 이미지 전체 삭제 --> 
+	<delete id="deleteImageAll">
+	
+		delete FROM gift_product where giftId = #{giftId}
+	
+	</delete>
   
   </mapper>

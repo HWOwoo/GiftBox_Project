@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="edu.hi.mapper.AttachMapper">
+    
+    <select id="getAttachList" resultType="edu.hi.model.AttachImageVO">
+	
+	select * from gift_image where giftId = #{giftId}
+	
+	</select>
+    
+  </mapper>

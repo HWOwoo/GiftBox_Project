@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import edu.hi.mapper.AdminMapper;
 import edu.hi.model.CateVO;
@@ -21,12 +22,24 @@ public class AdminServiceImpl implements AdminService {
 	private AdminMapper adminMapper;	
 	
 	/** 상품 등록 */
+	@Transactional
 	@Override
 	public void giftEnroll(GiftVO gift) {
 		
 		log.info("(srevice)giftEnroll........");
 		
 		adminMapper.giftEnroll(gift);
+		
+		if(gift.getImageList() == null || gift.getImageList().size() <= 0) {
+			return;
+		}
+		
+		gift.getImageList().forEach(attach ->{
+			
+			attach.setGiftId(gift.getGiftId());
+			adminMapper.imageEnroll(attach);
+			
+		});
 		
 	}
 	
@@ -62,12 +75,26 @@ public class AdminServiceImpl implements AdminService {
 	}
 	
 	/** 상품 정보 수정 */
+	@Transactional
 	@Override
 	public int goodsModify(GiftVO vo) {
 		
-		log.info("goodsModify........");
+		int result = adminMapper.goodsModify(vo);
 		
-		return adminMapper.goodsModify(vo);
+		if(result == 1 && vo.getImageList() != null && vo.getImageList().size() > 0) {
+			
+			adminMapper.deleteImageAll(vo.getGiftId());
+			
+			vo.getImageList().forEach(attach -> {
+				
+				attach.setGiftId(vo.getGiftId());
+				adminMapper.imageEnroll(attach);
+				
+			});
+			
+		}
+		
+		return result;
 		
 	}
 	

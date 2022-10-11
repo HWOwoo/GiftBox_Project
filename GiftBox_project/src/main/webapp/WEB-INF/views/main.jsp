@@ -39,13 +39,23 @@
         <nav>
             <ul>
                 <li>
-                    <img src="img/logo_home.png" class="logo_img" a href="#">
-
+                     <a href="/main"><img src="img/logo_home.png" class="logo_img"></a>
+                    
                     <div class="search_box">
-                        <input type="text" placeholder="검색어 입력" class="search_inptu">
-                        <button class="search_btn">검색</button>
-                    </div>
+                		<form id="searchForm" action="/search" method="get">
+                			<div class="search_input">
+                			   	<select name="type">
+                					<option value="T">이름</option>
+                					<option value="A">가게</option>
+                				</select>
+                				<input type="text" name="keyword">
+                    			<button class='search_btn'>검 색</button>                				
+                			</div>
+                		</form>
+                	</div>
                 </li>
+                
+
                   
                 <li></li>
             </ul>

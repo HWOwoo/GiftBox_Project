@@ -39,12 +39,20 @@
         <nav>
             <ul>
                 <li>
-                    <img src="img/logo_home.png" class="logo_img" a href="#">
-
+                    <a href="/main"><img src="img/logo_home.png" class="logo_img"></a>
+                    
                     <div class="search_box">
-                        <input type="text" placeholder="검색어 입력" class="search_inptu">
-                        <button class="search_btn">검색</button>
-                    </div>
+                		<form id="searchForm" action="/search" method="get">
+                			<div class="search_input">
+                			   	<select name="type">
+                					<option value="T">이름</option>
+                					<option value="A">가게</option>
+                				</select>
+                				<input type="text" name="keyword" value="<c:out value="${pageMaker.cri.keyword}"/>">
+                    			<button class='search_btn'>검 색</button>                				
+                			</div>
+                		</form>
+                	</div>
                 </li>
                   
                 <li></li>
@@ -86,11 +94,12 @@
             <a href="javascript:void(0)" class="dropbtn" onclick="myFunction()">
             전체 카테고리</a>
             <div class="dropdown-content" id="myDropdown">
-              <a href="#">메인메뉴 1</a>
-              <a href="#">메인메뉴 2</a>
-              <a href="#">메인메뉴 3</a>
-              <a href="#">메인메뉴 4</a>
-              <a href="#">메인메뉴 5</a>
+	            <a href="/search?type=C&cateCode=101000">패션</a>
+	            <a href="/search?type=C&cateCode=102000">스포츠</a>
+				<a href="/search?type=C&cateCode=103000">생활용품</a>
+	            <a href="/search?type=C&cateCode=104000">도서</a>
+	            <a href="/search?type=C&cateCode=105000">식품</a>
+	            <a href="/search?type=C&cateCode=106000">게임</a>	            
             </div>
           </li>
     </div>

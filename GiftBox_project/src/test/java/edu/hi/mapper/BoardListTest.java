@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import edu.hi.model.GiftVO;
+import edu.hi.model.AttachImageVO;
 
 @SpringBootTest
 class BoardListTest {
@@ -34,16 +34,18 @@ class BoardListTest {
 //			int result = mapper.goodsGetTotal(cri);
 //			System.out.println("resutl.........." + result);
 			
-		/* 상품 조회 페이지 */
+		/* 이미지 등록 */
 		@Test
-		public void goodsGetDetailTest() {
+		public void imageEnrollTest() {
 			
-			int giftId = 61;
+			AttachImageVO vo = new AttachImageVO();
 			
-			GiftVO result = mapper.goodsGetDetail(giftId);
+			vo.setGiftId(121);
+			vo.setFileName("test");
+			vo.setUploadPath("test");
+			vo.setUuid("test2");
 			
-			System.out.println("상품 조회 데이터 : " + result);
-			
+			mapper.imageEnroll(vo);
 			
 		}
 

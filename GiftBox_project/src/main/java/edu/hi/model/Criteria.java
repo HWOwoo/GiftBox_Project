@@ -1,8 +1,6 @@
 package edu.hi.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import java.util.Arrays;
 
 
 public class Criteria {
@@ -18,6 +16,12 @@ public class Criteria {
     
     /** 검색 키워드 */
     private String keyword;
+    
+	/** 작가 리스트 */
+	private String[] shopArr;
+	
+	/** 카테고리 코드 */
+	private String cateCode;
     
     /** Criteria 생성자 */
     public Criteria(int pageNum, int amount) {
@@ -67,10 +71,29 @@ public class Criteria {
 		this.keyword = keyword;
 	}
 
+	public String[] getShopArr() {
+		return shopArr;
+	}
+
+	public void setShopArr(String[] shopArr) {
+		this.shopArr = shopArr;
+	}
+
+	public String getCateCode() {
+		return cateCode;
+	}
+
+	public void setCateCode(String cateCode) {
+		this.cateCode = cateCode;
+	}
+
 	@Override
 	public String toString() {
-		return "Criteria [pageNum=" + pageNum + ", amount=" + amount + ", type=" + type + ", keyword=" + keyword + "]";
+		return "Criteria [pageNum=" + pageNum + ", amount=" + amount + ", type=" + type + ", keyword=" + keyword
+				+ ", shopArr=" + Arrays.toString(shopArr) + ", cateCode=" + cateCode + "]";
 	}
+	
+	
     
     
 	

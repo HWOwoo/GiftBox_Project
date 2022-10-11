@@ -8,10 +8,10 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 	<link rel="stylesheet" href="/css/admin/goodsmodify.css">
-	<script src="https://code.jquery.com/jquery-3.6.1.js" 
-	integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" 
-	crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
   	<script src="https://cdn.ckeditor.com/ckeditor5/26.0.0/classic/ckeditor.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 </head>
 <body>  
 
@@ -120,7 +120,7 @@
                     			</div>
                     			<div class="form_section_content bit">
                     				<textarea name="giftIntro" id="giftIntro_textarea">${goodsInfo.giftIntro}</textarea>
-                    				<span class="ck_warn giftIntro_warn">책 소개를 입력해주세요.</span>
+                    				<span class="ck_warn giftIntro_warn">가게 소개를 입력해주세요.</span>
                     			</div>
                     		</div>        		
                     		<div class="form_section">
@@ -129,9 +129,20 @@
                     			</div>
                     			<div class="form_section_content bct">
                     				<textarea name="giftContents" id="giftContents_textarea">${goodsInfo.giftContents}</textarea>
-                    				<span class="ck_warn giftContents_warn">책 목차를 입력해주세요.</span>
+                    				<span class="ck_warn giftContents_warn">가게 목차를 입력해주세요.</span>
                     			</div>
                     		</div>
+                    		<div class="form_section">
+                    			<div class="form_section_title">
+                    				<label>상품 이미지</label>
+                    			</div>
+                    			<div class="form_section_content">
+									<input type="file" id ="fileItem" name='uploadFile' style="height: 30px;">
+									<div id="uploadResult">
+																		
+									</div>									
+                    			</div>
+                    		</div>	
                     		<input type="hidden" name='giftId' value="${goodsInfo.giftId}">
                    		</form>
                    			<div class="btn_section">
@@ -148,10 +159,10 @@
                 	</form>                     
                 </div>
                 
-	<script>
-	
-		$(document).ready(function(){
+<script>
 
+		$(document).ready(function(){
+				
 			/* 캘린더 위젯 적용 */
 			/* 설정 */
 			const config = {
@@ -168,8 +179,7 @@
 			    yearSuffix: '년',
 		        changeMonth: true,
 		        changeYear: true
-			}	
-			
+			}			
 			/* 캘린더 */
 			$(function() {
 				let publeYear = '${goodsInfo.publeYear}';
@@ -178,6 +188,72 @@
 				$( "input[name='publeYear']" ).datepicker(config);
 				$( "input[name='publeYear']" ).datepicker('setDate', publeYear);
 			});	
+			
+			/* 위지윅 적용 */
+			 
+			/* 책 소개 */
+			ClassicEditor
+				.create(document.querySelector('#giftIntro_textarea'))
+				.catch(error=>{
+					console.error(error);
+				});
+				
+			/* 책 목차 */	
+			ClassicEditor
+			.create(document.querySelector('#giftContents_textarea'))
+			.catch(error=>{
+				console.error(error);
+			});
+			
+			/* 할인율 인터페이스 출력 */
+			let giftPriceInput = $("input[name='giftPrice']");
+			let discountInput = $("input[name='giftDiscount']");
+			
+			let giftPrice = giftPriceInput.val();
+			let rawDiscountRate = discountInput.val();
+			let discountRate = rawDiscountRate * 100;
+			
+			/* 기존 이미지 출력 */
+			let giftId = '<c:out value="${goodsInfo.giftId}"/>';
+			let uploadResult = $("#uploadResult");
+			
+			$.getJSON("/getAttachList", {giftId : giftId}, function(arr){
+				
+				console.log(arr);
+				
+				if(arr.length === 0){
+					
+					
+					let str = "";
+					str += "<div id='result_card'>";
+					str += "<img src='img/exbox.png'>";
+					str += "</div>";
+					
+					uploadResult.html(str);				
+					return;
+				}
+				
+				let str = "";
+				let obj = arr[0];
+				
+				let fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
+				str += "<div id='result_card'";
+				str += "data-path='" + obj.uploadPath + "' data-uuid='" + obj.uuid + "' data-filename='" + obj.fileName + "'";
+				str += ">";
+				str += "<img src='/display?fileName=" + fileCallPath +"'>";
+				str += "<div class='imgDeleteBtn' data-file='" + fileCallPath + "'>x</div>";
+				str += "<input type='hidden' name='imageList[0].fileName' value='"+ obj.fileName +"'>";
+				str += "<input type='hidden' name='imageList[0].uuid' value='"+ obj.uuid +"'>";
+				str += "<input type='hidden' name='imageList[0].uploadPath' value='"+ obj.uploadPath +"'>";				
+				str += "</div>";
+				
+				uploadResult.html(str);			
+				
+			});// GetJSON
+			
+			let discountPrice = giftPrice * (1-rawDiscountRate);
+			$(".span_discount").html(discountPrice);
+			$("#discount_interface").val(discountRate);
 			
 			/* 카테고리 */
 			let cateList = JSON.parse('${cateList}');
@@ -266,23 +342,90 @@
 				if(targetCate2.cateParent === obj.value){
 					$(obj).attr("selected", "selected");
 				}
-			});	
-			
-			/* 할인율 인터페이스 출력 */
-			let giftPriceInput = $("input[name='giftPrice']");
-			let discountInput = $("input[name='giftDiscount']");
-			
-			let giftPrice = giftPriceInput.val();
-			let rawDiscountRate = discountInput.val();
-			let discountRate = rawDiscountRate * 100;
+			});		
 			
 			
-			let discountPrice = giftPrice * (1-rawDiscountRate);
-			$(".span_discount").html(discountPrice);
-			$("#discount_interface").val(discountRate);
+			
+			
+		});
+
+</script>
+
+
+<script>
+	
+		/* 카테고리 */
+		let cateList = JSON.parse('${cateList}');
+		
+		let cate1Array = new Array();
+		let cate2Array = new Array();
+		let cate3Array = new Array();
+		let cate1Obj = new Object();
+		let cate2Obj = new Object();
+		let cate3Obj = new Object();
+		
+		let cateSelect1 = $(".cate1");		
+		let cateSelect2 = $(".cate2");
+		let cateSelect3 = $(".cate3");
+		
+		/* 카테고리 배열 초기화 메서드 */
+		function makeCateArray(obj,array,cateList, tier){
+			for(let i = 0; i < cateList.length; i++){
+				if(cateList[i].tier === tier){
+					obj = new Object();
+					
+					obj.cateName = cateList[i].cateName;
+					obj.cateCode = cateList[i].cateCode;
+					obj.cateParent = cateList[i].cateParent;
+					
+					array.push(obj);				
+					
+				}
+			}
+		}	
+		
+			/* 배열 초기화 */
+		makeCateArray(cate1Obj,cate1Array,cateList,1);
+		makeCateArray(cate2Obj,cate2Array,cateList,2);
+		makeCateArray(cate3Obj,cate3Array,cateList,3);
+		
+		
+			/* 중분류 <option> 태그 */
+		$(cateSelect1).on("change",function(){
+			
+			let selectVal1 = $(this).find("option:selected").val();	
+			
+			cateSelect2.children().remove();
+			cateSelect3.children().remove();
+			
+			cateSelect2.append("<option value='none'>선택</option>");
+			cateSelect3.append("<option value='none'>선택</option>");
+			
+			for(let i = 0; i < cate2Array.length; i++){
+				if(selectVal1 === cate2Array[i].cateParent){
+					cateSelect2.append("<option value='"+cate2Array[i].cateCode+"'>" + cate2Array[i].cateName + "</option>");	
+				}
+			}// for
 			
 		});
 		
+			/* 소분류 <option>태그 */
+		$(cateSelect2).on("change",function(){
+			
+			let selectVal2 = $(this).find("option:selected").val();
+			
+			cateSelect3.children().remove();
+			
+			cateSelect3.append("<option value='none'>선택</option>");		
+			
+			for(let i = 0; i < cate3Array.length; i++){
+				if(selectVal2 === cate3Array[i].cateParent){
+					cateSelect3.append("<option value='"+cate3Array[i].cateCode+"'>" + cate3Array[i].cateName + "</option>");	
+				}
+			}// for		
+			
+		});
+			
 		/* 할인율 Input 설정 */
 		
 		$("#discount_interface").on("propertychange change keyup paste input", function(){
@@ -319,122 +462,240 @@
 			
 			
 		});		
-	
-	</script> 
-	
-	<script>
-	
-	/* 카테고리 */
-	let cateList = JSON.parse('${cateList}');
 
-	let cate1Array = new Array();
-	let cate2Array = new Array();
-	let cate3Array = new Array();
-	let cate1Obj = new Object();
-	let cate2Obj = new Object();
-	let cate3Obj = new Object();
-	
-	let cateSelect1 = $(".cate1");		
-	let cateSelect2 = $(".cate2");
-	let cateSelect3 = $(".cate3");
-	
-	/* 카테고리 배열 초기화 메서드 */
-	function makeCateArray(obj,array,cateList, tier){
-		for(let i = 0; i < cateList.length; i++){
-			if(cateList[i].tier === tier){
-				obj = new Object();
-				
-				obj.cateName = cateList[i].cateName;
-				obj.cateCode = cateList[i].cateCode;
-				obj.cateParent = cateList[i].cateParent;
-				
-				array.push(obj);				
-				
-			}
-		}
-	}	
-	
-		/* 배열 초기화 */
-	makeCateArray(cate1Obj,cate1Array,cateList,1);
-	makeCateArray(cate2Obj,cate2Array,cateList,2);
-	makeCateArray(cate3Obj,cate3Array,cateList,3);
 
-	
-		/* 중분류 <option> 태그 */
-	$(cateSelect1).on("change",function(){
-		
-		let selectVal1 = $(this).find("option:selected").val();	
-		
-		cateSelect2.children().remove();
-		cateSelect3.children().remove();
-		
-		cateSelect2.append("<option value='none'>선택</option>");
-		cateSelect3.append("<option value='none'>선택</option>");
-		
-		for(let i = 0; i < cate2Array.length; i++){
-			if(selectVal1 === cate2Array[i].cateParent){
-				cateSelect2.append("<option value='"+cate2Array[i].cateCode+"'>" + cate2Array[i].cateName + "</option>");	
-			}
-		}// for
-		
-	});
-	
-		/* 소분류 <option>태그 */
-	$(cateSelect2).on("change",function(){
-		
-		let selectVal2 = $(this).find("option:selected").val();
-		
-		cateSelect3.children().remove();
-		
-		cateSelect3.append("<option value='none'>선택</option>");		
-		
-		for(let i = 0; i < cate3Array.length; i++){
-			if(selectVal2 === cate3Array[i].cateParent){
-				cateSelect3.append("<option value='"+cate3Array[i].cateCode+"'>" + cate3Array[i].cateName + "</option>");	
-			}
-		}// for		
-		
-	});	
-		
-	/* 위지윅 적용 */
-	 
-	/* 책 소개 */
-	ClassicEditor
-		.create(document.querySelector('#giftIntro_textarea'))
-		.catch(error=>{
-			console.error(error);
+		/* 취소 버튼 */
+		$("#cancelBtn").on("click", function(e){
+			e.preventDefault();
+			$("#moveForm").submit();
 		});
 		
-	/* 책 목차 */	
-	ClassicEditor
-	.create(document.querySelector('#giftContents_textarea'))
-	.catch(error=>{
-		console.error(error);
-	});
-	
-	/* 취소 버튼 */
-	$("#cancelBtn").on("click", function(e){
-		e.preventDefault();
-		$("#moveForm").submit();
-	});
-	
-	/* 수정 버튼 */
-	$("#modifyBtn").on("click", function(e){
-		e.preventDefault();
-		$("#modifyForm").submit();
-	});
-	
-	/* 삭제 버튼 */
-	$("#deleteBtn").on("click", function(e){
-		e.preventDefault();
-		let moveForm = $("#moveForm");
-		moveForm.find("input").remove();
-		moveForm.append('<input type="hidden" name="giftId" value="${goodsInfo.giftId}">');
-		moveForm.attr("action", "/admin/goodsDelete");
-		moveForm.attr("method", "post");
-		moveForm.submit();
-	});
-	
-	</script>
+		/* 수정 버튼 */
+		$("#modifyBtn").on("click", function(e){
+			e.preventDefault();
+			$("#modifyForm").submit();
+		});
+		
+		/* 수정 버튼 */
+		$("#modifyBtn").on("click",function(e){
+			
+			e.preventDefault();
+			
+			/* 체크 변수 */
+			let giftNameCk = false;
+			let shopIdCk = false;
+			let publeYearCk = false;
+			let publisherCk = false;
+			let cateCodeCk = false;
+			let priceCk = false;
+			let stockCk = false;
+			let discountCk = false;
+			let introCk = false;
+			let contentsCk = false;	
+			
+			/* 체크 대상 변수 */
+			let giftName = $("input[name='giftName']").val();
+			let shopId = $("input[name='shopId']").val();
+			let publeYear = $("input[name='publeYear']").val();
+			let publisher = $("input[name='publisher']").val();
+			let cateCode = $("select[name='cateCode']").val();
+			let giftPrice = $("input[name='giftPrice']").val();
+			let giftStock = $("input[name='giftStock']").val();
+			let giftDiscount = $("#discount_interface").val();
+			let giftIntro = $(".bit p").html();
+			let giftContents = $(".bct p").html();	
+			
+			/* 공란 체크 */
+			if(giftName){
+				$(".giftName_warn").css('display','none');
+				giftNameCk = true;
+			} else {
+				$(".giftName_warn").css('display','block');
+				giftNameCk = false;
+			}
+			
+			if(shopId){
+				$(".shopId_warn").css('display','none');
+				shopIdCk = true;
+			} else {
+				$(".shopId_warn").css('display','block');
+				shopIdCk = false;
+			}
+			
+			if(publeYear){
+				$(".publeYear_warn").css('display','none');
+				publeYearCk = true;
+			} else {
+				$(".publeYear_warn").css('display','block');
+				publeYearCk = false;
+			}	
+			
+			if(publisher){
+				$(".publisher_warn").css('display','none');
+				publisherCk = true;
+			} else {
+				$(".publisher_warn").css('display','block');
+				publisherCk = false;
+			}
+			
+			if(cateCode != 'none'){
+				$(".cateCode_warn").css('display','none');
+				cateCodeCk = true;
+			} else {
+				$(".cateCode_warn").css('display','block');
+				cateCodeCk = false;
+			}	
+			
+			if(giftPrice != 0){
+				$(".giftPrice_warn").css('display','none');
+				priceCk = true;
+			} else {
+				$(".giftPrice_warn").css('display','block');
+				priceCk = false;
+			}	
+			
+			if(giftStock != 0){
+				$(".giftStock_warn").css('display','none');
+				stockCk = true;
+			} else {
+				$(".giftStock_warn").css('display','block');
+				stockCk = false;
+			}		
+			
+			if(!isNaN(giftDiscount)){
+				$(".giftDiscount_warn").css('display','none');
+				discountCk = true;
+			} else {
+				$(".giftDiscount_warn").css('display','block');
+				discountCk = false;
+			}	
+			
+			if(giftIntro != '<br data-cke-filler="true">'){
+				$(".giftIntro_warn").css('display','none');
+				introCk = true;
+			} else {
+				$(".giftIntro_warn").css('display','block');
+				introCk = false;
+			}	
+			
+			if(giftContents != '<br data-cke-filler="true">'){
+				$(".giftContents_warn").css('display','none');
+				contentsCk = true;
+			} else {
+				$(".giftContents_warn").css('display','block');
+				contentsCk = false;
+			}		
+			
+			/* 최종 확인 */
+			if(giftNameCk && shopIdCk && publeYearCk && publisherCk && cateCodeCk && priceCk && stockCk && discountCk && introCk && contentsCk ){
+				//alert('통과');
+				$("#modifyForm").submit();
+			} else {
+				return false;
+			}
+			
+		});
+		
+		/* 이미지 삭제 버튼 동작 */
+		$("#uploadResult").on("click", ".imgDeleteBtn", function(e){
+			
+			deleteFile();
+			
+		});
+		
+		/* 파일 삭제 메서드 */
+		function deleteFile(){
+			
+			$("#result_card").remove();
+		}
+		
+		/* 이미지 업로드 */
+		$("input[type='file']").on("change", function(e){
+			
+			/* 이미지 존재시 삭제 */
+			if($("#result_card").length > 0){
+				deleteFile();
+			}
+					
+			let formData = new FormData();
+			let fileInput = $('input[name="uploadFile"]');
+			let fileList = fileInput[0].files;
+			let fileObj = fileList[0];
+			
+			if(!fileCheck(fileObj.name, fileObj.size)){
+				return false;
+			}
+			
+			formData.append("uploadFile", fileObj);
+			
+			$.ajax({
+				url: '/admin/uploadAjaxAction',
+		    	processData : false,
+		    	contentType : false,
+		    	data : formData,
+		    	type : 'POST',
+		    	dataType : 'json',
+		    	success : function(result){
+		    		console.log(result);
+		    		showUploadImage(result);
+		    	},
+		    	error : function(result){
+		    		alert("이미지 파일이 아닙니다.");
+		    	}
+			});		
+
+			
+		});
+			
+		/* var, method related with attachFile */
+		let regex = new RegExp("(.*?)\.(jpg|png)$");
+		let maxSize = 1048576; //1MB	
+		
+		function fileCheck(fileName, fileSize){
+
+			if(fileSize >= maxSize){
+				alert("파일 사이즈 초과");
+				return false;
+			}
+				  
+			if(!regex.test(fileName)){
+				alert("해당 종류의 파일은 업로드할 수 없습니다.");
+				return false;
+			}
+			
+			return true;		
+			
+		}
+		
+		/* 이미지 출력 */
+		function showUploadImage(uploadResultArr){
+			
+			/* 전달받은 데이터 검증 */
+			if(!uploadResultArr || uploadResultArr.length == 0){return}
+			
+			let uploadResult = $("#uploadResult");
+			
+			let obj = uploadResultArr[0];
+			
+			let str = "";
+			
+			let fileCallPath = encodeURIComponent(obj.uploadPath.replace(/\\/g, '/') + "/s_" + obj.uuid + "_" + obj.fileName);
+			//replace 적용 하지 않아도 가능
+			//let fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
+			
+			str += "<div id='result_card'>";
+			str += "<img src='/display?fileName=" + fileCallPath +"'>";
+			str += "<div class='imgDeleteBtn' data-file='" + fileCallPath + "'>x</div>";
+			str += "<input type='hidden' name='imageList[0].fileName' value='"+ obj.fileName +"'>";
+			str += "<input type='hidden' name='imageList[0].uuid' value='"+ obj.uuid +"'>";
+			str += "<input type='hidden' name='imageList[0].uploadPath' value='"+ obj.uploadPath +"'>";		
+			str += "</div>";		
+			
+	   		uploadResult.append(str);     
+	        
+		}
+		
+</script>
+
 </body>
 </html>

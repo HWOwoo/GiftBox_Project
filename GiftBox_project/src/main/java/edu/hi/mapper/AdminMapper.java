@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import edu.hi.model.AttachImageVO;
 import edu.hi.model.CateVO;
 import edu.hi.model.Criteria;
 import edu.hi.model.GiftVO;
@@ -31,5 +32,11 @@ public interface AdminMapper {
 	
 	/** 상품 정보 삭제 */
 	public int goodsDelete(int giftId);
+	
+	/** 이미지 등록 */
+	public void imageEnroll(AttachImageVO vo);
+	
+	/** 지정 상품 이미지 전체 삭제 */
+	public void deleteImageAll(int giftId);
 	
 }

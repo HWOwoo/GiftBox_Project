@@ -14,6 +14,17 @@
     <script src="https://cdn.ckeditor.com/ckeditor5/35.1.0/classic/ckeditor.js"></script> 
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 	<script src="//code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
+	
+	<style type="text/css">
+		#result_card img{
+			max-width: 100%;
+		    height: auto;
+		    display: block;
+		    padding: 5px;
+		    margin-top: 10px;
+		    margin: auto;	
+		}
+	</style>
 </head>
 <body>
 				<%@include file="../include/admin_header.jsp" %>
@@ -137,6 +148,19 @@
                     				<textarea name="giftContents" id="giftContents_textarea" disabled>${goodsInfo.giftContents}</textarea>
                     			</div>
                     		</div>
+                    		<div class="form_section">
+                    			<div class="form_section_title">
+                    				<label>상품 이미지</label>
+                    			</div>
+                    			
+                    			<div class="form_section_content">
+
+									<div id="uploadReslut">
+																		
+									</div>
+									
+                    			</div>
+                    		</div>
                    		
                    			<div class="btn_section">
                    				<button id="cancelBtn" class="btn">상품 목록</button>
@@ -168,9 +192,31 @@
 			publeYear = publeYear.substring(0, length);
 			
 			$("input[name='publeYear']").attr("value", publeYear);
+		
+			ClassicEditor
+			.create(document.querySelector('#giftIntro_textarea'))
+			.then(editor => {
+				console.log(editor);
+				editor.isReadOnly = true;
+			})
+			.catch(error=>{
+				console.error(error);
+			});
+			
+			/* 책 목차 */	
+			ClassicEditor
+			.create(document.querySelector('#giftContents_textarea'))
+			.then(editor => {
+				console.log(editor);
+				editor.isReadOnly = true;
+			})
+			.catch(error=>{
+				console.error(error);
+			});	
 			
 			/* 카테고리 */
 			let cateList = JSON.parse('${cateList}');
+
 			let cate1Array = new Array();
 			let cate2Array = new Array();
 			let cate3Array = new Array();
@@ -203,7 +249,6 @@
 			makeCateArray(cate2Obj,cate2Array,cateList,2);
 			makeCateArray(cate3Obj,cate3Array,cateList,3);
 			
-			
 			let targetCate2 = '';
 			let targetCate3 = '${goodsInfo.cateCode}';
 			
@@ -211,25 +256,25 @@
 				if(targetCate3 === cate3Array[i].cateCode){
 					targetCate3 = cate3Array[i];
 				}
-			}// for			
+			}// for	
 			
 			for(let i = 0; i < cate3Array.length; i++){
 				if(targetCate3.cateParent === cate3Array[i].cateParent){
 					cateSelect3.append("<option value='"+cate3Array[i].cateCode+"'>" + cate3Array[i].cateName + "</option>");
 				}
-			}				
+			}
 			
 			$(".cate3 option").each(function(i,obj){
 				if(targetCate3.cateCode === obj.value){
 					$(obj).attr("selected", "selected");
 				}
-			});			
+			});	
 			
 			for(let i = 0; i < cate2Array.length; i++){
 				if(targetCate3.cateParent === cate2Array[i].cateCode){
 					targetCate2 = cate2Array[i];	
 				}
-			}// for		
+			}// for	
 			
 			for(let i = 0; i < cate2Array.length; i++){
 				if(targetCate2.cateParent === cate2Array[i].cateParent){
@@ -241,44 +286,51 @@
 				if(targetCate2.cateCode === obj.value){
 					$(obj).attr("selected", "selected");
 				}
-			});				
-			
-			
+			});
 			
 			for(let i = 0; i < cate1Array.length; i++){
 				cateSelect1.append("<option value='"+cate1Array[i].cateCode+"'>" + cate1Array[i].cateName + "</option>");
-			}	
+			}
 			
 			$(".cate1 option").each(function(i,obj){
 				if(targetCate2.cateParent === obj.value){
 					$(obj).attr("selected", "selected");
 				}
-			});				
-		
-			/* 제품 소개 */
-			ClassicEditor
-				.create(document.querySelector('#giftIntro_textarea'))
-				.then(editor => {
-					console.log(editor);
-					editor.isReadOnly = true;
-				})
-				.catch(error=>{
-					console.error(error);
-				});
+			});	
+			
+			/* 이미지 정보 호출 */
+			let giftId = '<c:out value="${goodsInfo.giftId}"/>';
+			let uploadReslut = $("#uploadReslut");			
+			
+			$.getJSON("/getAttachList", {giftId : giftId}, function(arr){	
 				
-			/* 제품 내용 */	
-			ClassicEditor
-			.create(document.querySelector('#giftContents_textarea'))
-			.then(editor => {
-				console.log(editor);
-				editor.isReadOnly = true;
-			})
-			.catch(error=>{
-				console.error(error);
-			});
+				if(arr.length === 0){
+					
+					let str = "";
+					str += "<div id='result_card'>";
+					str += "<img src='/img/exbox.png'>";
+					str += "</div>";
+					
+					uploadReslut.html(str);	
+					
+					return;
+				}
+				
+				let str = "";
+				let obj = arr[0];	
+				
+				let fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
+				str += "<div id='result_card'";
+				str += "data-path='" + obj.uploadPath + "' data-uuid='" + obj.uuid + "' data-filename='" + obj.fileName + "'";
+				str += ">";
+				str += "<img src='/display?fileName=" + fileCallPath +"'>";
+				str += "</div>";		
+				
+				uploadReslut.html(str);		
+				
+			});	
 		
-		
-		});
+		}); // document
 		
 		/* 목록 이동 버튼 */
 		$("#cancelBtn").on("click", function(e){

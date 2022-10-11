@@ -151,13 +151,18 @@ header {
 }
 
 .search_btn {
-    width: 50px;
+    width: 170px;
     height: 100%;
     border: 0px;
     background: hsl(34, 57%, 70%);
     outline: none;
     float: right;
     color: #ffffff;
+}
+
+.search_input select {
+	width: 170px;
+	text-align: center;
 }
 
 
@@ -194,7 +199,7 @@ header li {
 .powercouple {
     height: 70vh;
     width: 100%;
-    background-image:linear-gradient(rgba(0,0,0,.4), rgba(0,0,0,.4)), url(https://pixabay.com/get/g4f8e9dcf6d75e1f7f5dc51360b4a86904e35a8b32933f08fbca84efc3f3826783729e3630f45032627b1ae10a7afc8326c80eb63a8b6ff2a015b88ab6a2d892e369fa683c3b08049673117482e0dcbfa_1920.jpg);
+    background-image:linear-gradient(rgba(0,0,0,.4), rgba(0,0,0,.4)), url(/img/giftbox_main.jpg);
     background-size: cover;
     display: flex;
     flex-direction: column;
@@ -424,3 +429,5 @@ footer {
     margin-right: 10px;
     margin-top: 10px;
 }
+
+
