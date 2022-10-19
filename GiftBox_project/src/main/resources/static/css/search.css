@@ -105,3 +105,60 @@
 .next a, .prev a {
     color: #ccc;
 }
+
+/* 필터정보 */
+.search_filter {
+    width: 85%;
+    margin: auto;
+	margin-top: 30px;
+    margin-bottom: 50px;    
+} 
+.filter_button_wrap {
+    width: 100%;
+}
+
+.filter_button_wrap button {
+    width: 50%;
+}
+
+.filter_button{
+	background-color: #deb887;
+	border: 1px solid black;
+	color: white;
+	padding: 10px 24px;
+	cursor: pointer;
+	float: left;
+} 
+.filter_button_wrap:after {
+    content: "";
+    clear: both;
+    display: table;
+}  	
+.filter_button_wrap button:not(:last-child) {
+    border-right: none;
+}
+
+.filter_button:hover {
+    background-color: #bc925a;
+}
+
+.filter_active{
+	background-color: #bc925a;
+}
+
+.filter_content{
+	padding:20px 50px 20px 50px;
+	border: 1px solid gray;
+}
+
+.filter_content a:not(:first-child){
+	margin-left: 10px;
+}
+
+.filter_a{
+	display: block;
+}
+
+.filter_b{
+	display: none;
+}

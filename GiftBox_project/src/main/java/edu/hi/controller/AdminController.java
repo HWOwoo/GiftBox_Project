@@ -34,9 +34,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.hi.model.AttachImageVO;
 import edu.hi.model.Criteria;
 import edu.hi.model.GiftVO;
+import edu.hi.model.OrderCancelDTO;
+import edu.hi.model.OrderDTO;
 import edu.hi.model.PageDTO;
 import edu.hi.model.ShopVO;
 import edu.hi.service.AdminService;
+import edu.hi.service.OrderService;
 import edu.hi.service.ShopService;
 import net.coobird.thumbnailator.Thumbnails;
 
@@ -51,6 +54,9 @@ public class AdminController {
     
 	@Autowired
 	private AdminService adminService;
+	
+	@Autowired
+	private OrderService orderService;
     
     /** 관리자 메인 페이지 이동 */
     @RequestMapping(value="main", method = RequestMethod.GET)
@@ -443,5 +449,29 @@ public class AdminController {
 		
 	}
 	
+	/** 주문 현황 페이지 */
+	@GetMapping("/orderList")
+	public String orderListGET(Criteria cri, Model model) {
+
+		List<OrderDTO> list = adminService.getOrderList(cri);
+		
+		if(!list.isEmpty()) {
+			model.addAttribute("list", list);
+			model.addAttribute("pageMaker", new PageDTO(cri, adminService.getOrderTotal(cri)));
+		} else {
+			model.addAttribute("listCheck", "empty");
+		}
+		
+		return "/admin/orderList";
+	}
 	
+	/** 주문삭제 */
+	@PostMapping("/orderCancle")
+	public String orderCanclePOST(OrderCancelDTO dto) {
+		
+		orderService.orderCancle(dto);
+		
+		return "redirect:/admin/orderList?keyword=" + dto.getKeyword() + "&amount=" + dto.getAmount() + "&pageNum=" + dto.getPageNum();
+
+	}
 }

@@ -74,4 +74,105 @@
 	
 	</select>
 	
+	<!-- 본사 카테고리 리스트 -->
+	<select id="getCateCode1" resultType="edu.hi.model.GiftVO">
+	
+		<![CDATA[
+			select * from gift_bcate where cateCode > 100000 and cateCode < 200000
+		]]>
+	</select>
+	
+	<!-- 외주 카테고리 리스트 -->
+	<select id="getCateCode2" resultType="edu.hi.model.GiftVO">
+	
+		<![CDATA[
+			select * from gift_bcate where cateCode > 200000 and cateCode < 300000
+		]]>
+	
+	</select>
+
+	<!-- 검색 대상 카테고리 리스트 -->
+	<select id="getCateList" resultType="String">
+	
+		select DISTINCT cateCode from gift_product where 
+		<foreach item="type" collection="typeArr">		
+  				<choose>
+  					<when test="type == 'A'.toString()">
+  						<trim prefixOverrides="or">
+		  					<foreach collection="shopArr" item="shopId">
+		  						<trim prefix="or">
+		  							shopId = #{shopId}
+		  						</trim>
+		  					</foreach>  						
+  						</trim>
+  					</when>
+  					<when test="type == 'T'.toString()">
+  						giftName like '%' || #{keyword} || '%'
+  					</when>  					
+  				</choose>
+  		</foreach>
+	
+	</select>
+	
+
+	<!-- 카테고리 정보(+검색대상 갯수) -->	
+	<select id="getCateInfo" resultType="edu.hi.model.CateFilterDTO">
+	
+		select DISTINCT count(*) cateCount, a.cateCode, b.cateName from gift_product a left join gift_bcate b on a.cateCode = b.cateCode 
+		
+		where 
+
+		<foreach item="type" collection="typeArr">		
+  				<choose>
+  					<when test="type == 'A'.toString()">
+  					
+  						<trim prefix="(" suffix=")" prefixOverrides="or">
+  						
+		  					<foreach collection="shopArr" item="shopId">
+		  					
+		  						<trim prefix="or">
+		  						
+		  							shopId = #{shopId}
+		  							
+		  						</trim>
+		  						
+		  					</foreach>
+		  					  						
+  						</trim>
+  						
+  						and a.cateCode = #{cateCode}
+  						
+  					</when>
+  					
+  					<when test="type == 'T'.toString()">
+  					
+  						giftName like '%' || #{keyword} || '%' and a.cateCode = #{cateCode}
+  						 
+  					</when>
+  					  					
+  				</choose>
+  		</foreach>
+  		
+  		group by a.cateCode, b.cateName
+	
+	</select>	
+	
+	<!-- 상품 정보 -->
+	<select id="getGoodsInfo" resultType="edu.hi.model.GiftVO">
+	
+			select a.GIFTID, a.GIFTNAME, a.SHOPID, b.SHOPNAME, a.PUBLEYEAR, a.PUBLISHER, a.CATECODE, c.CATENAME, a.GIFTPRICE, a.GIFTSTOCK, a.GIFTDISCOUNT, a.GIFTINTRO, a.GIFTCONTENTS
+			from gift_product a left outer join shop_author b on a.shopId = b.shopId
+			left outer join gift_bcate c on a.catecode = c.catecode
+			where giftid = ${giftId}	
+	
+	</select>
+	
+	<select id="getGiftIdName" resultType="edu.hi.model.GiftVO">
+	
+		select giftId, giftName from gift_product 
+		where giftId = #{giftId}
+	
+	
+	</select>		
+	
   </mapper>

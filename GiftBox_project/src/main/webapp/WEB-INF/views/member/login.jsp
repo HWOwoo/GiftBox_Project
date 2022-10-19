@@ -40,7 +40,7 @@
         <nav>
             <ul>
                 <li>
-                    <a href="/main"><img src="img/logo_home.png" class="logo_img"></a>
+                    <a href="/main"><img src="/img/logo_home.png" class="logo_img"></a>
                     
                     <div class="search_box">
                 		<form id="searchForm" action="/search" method="get">

@@ -8,9 +8,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import edu.hi.mapper.AdminMapper;
 import edu.hi.mapper.AttachMapper;
 import edu.hi.mapper.GiftMapper;
 import edu.hi.model.AttachImageVO;
+import edu.hi.model.CateFilterDTO;
 import edu.hi.model.Criteria;
 import edu.hi.model.GiftVO;
 
@@ -24,6 +26,9 @@ public class GiftServiceImpl implements GiftService {
 	
 	@Autowired
 	private AttachMapper attachMapper;
+	
+	@Autowired
+	private AdminMapper adminMapper;
 
 	/** 상품 검색 */
 	@Override
@@ -71,6 +76,73 @@ public class GiftServiceImpl implements GiftService {
 		
 		return giftMapper.goodsGetTotal(cri);
 		
+	}
+	
+	/** 국내 카테고리 리스트 */
+	@Override
+	public List<GiftVO> getCateCode1() {
+		
+		log.info("getCateCode1().........");
+		
+		return giftMapper.getCateCode1();
+	}
+
+	/** 외국 카테고리 리스트 */
+	@Override
+	public List<GiftVO> getCateCode2() {
+		
+		log.info("getCateCode2().........");
+		
+		return giftMapper.getCateCode2();
+	}
+	
+	/** 검색결과 카테고리 필터 정보 */
+	@Override
+	public List<CateFilterDTO> getCateInfoList(Criteria cri) {
+		List<CateFilterDTO> filterInfoList = new ArrayList<CateFilterDTO>();
+		
+		String[] typeArr = cri.getType().split("");
+		String[] shopArr;
+		
+		for(String type : typeArr) {
+			if(type.equals("A")){
+				shopArr = giftMapper.getShopIdList(cri.getKeyword());
+				if(shopArr.length == 0) {
+					return filterInfoList;
+				}
+				cri.setShopArr(shopArr);
+			}
+		}
+		
+		String[] cateList = giftMapper.getCateList(cri);
+		
+		String tempCateCode = cri.getCateCode();
+		
+		for(String cateCode : cateList) {
+			cri.setCateCode(cateCode);
+			CateFilterDTO filterInfo = giftMapper.getCateInfo(cri);
+			filterInfoList.add(filterInfo);
+		}
+		
+		cri.setCateCode(tempCateCode);
+		
+		return filterInfoList;
+	}
+	
+	/** 상품 정보 */
+	@Override
+	public GiftVO getGoodsInfo(int giftId) {
+		
+		GiftVO goodsInfo = giftMapper.getGoodsInfo(giftId);
+		goodsInfo.setImageList(adminMapper.getAttachInfo(giftId));
+		
+		return goodsInfo;
+	}
+	
+	@Override
+	public GiftVO getGiftIdName(int giftId) {
+		
+		return giftMapper.getGiftIdName(giftId);
 	}
 	
 }

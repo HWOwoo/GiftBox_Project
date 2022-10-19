@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -39,9 +40,12 @@ public class BookController {
 	private GiftService giftService;
 	
 	@RequestMapping(value = "/main", method = RequestMethod.GET)
-	public void mainPageGET() {
+	public void mainPageGET(Model model) {
 		
 		logger.info("메인 페이지 진입");
+		
+		model.addAttribute("cate1", giftService.getCateCode1());
+		model.addAttribute("cate2", giftService.getCateCode2());
 		
 	}
 	
@@ -99,11 +103,38 @@ public class BookController {
 		
 		model.addAttribute("pageMaker", new PageDTO(cri, giftService.goodsGetTotal(cri)));
 		
+		String[] typeArr = cri.getType().split("");
+		
+		for(String s : typeArr) {
+			if(s.equals("T") || s.equals("A")) {
+				model.addAttribute("filter_info", giftService.getCateInfoList(cri));		
+			}
+		}
 		
 		return "search";
 		
 	}
 	
+	/** 상품 상세 */
+	@GetMapping("/goodsDetail/{giftId}")
+	public String goodsDetailGET(@PathVariable("giftId")int giftId, Model model) {
+		
+		logger.info("goodsDetailGET()..........");
+		
+		model.addAttribute("goodsInfo", giftService.getGoodsInfo(giftId));
+		
+		return "/goodsDetail";
+	}
 	
+	/* 리뷰 쓰기 */
+	@GetMapping("/replyEnroll/{memberId}")
+	public String replyEnrollWindowGET(@PathVariable("memberId")String memberId, int giftId, Model model) {
+		
+		GiftVO gift = giftService.getGiftIdName(giftId);
+		model.addAttribute("giftInfo", gift);
+		model.addAttribute("memberId", memberId);
+		
+		return "/replyEnroll";
+	}
 	
 }

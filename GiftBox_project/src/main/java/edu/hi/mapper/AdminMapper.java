@@ -8,6 +8,7 @@ import edu.hi.model.AttachImageVO;
 import edu.hi.model.CateVO;
 import edu.hi.model.Criteria;
 import edu.hi.model.GiftVO;
+import edu.hi.model.OrderDTO;
 
 @Mapper
 public interface AdminMapper {
@@ -38,5 +39,17 @@ public interface AdminMapper {
 	
 	/** 지정 상품 이미지 전체 삭제 */
 	public void deleteImageAll(int giftId);
+	
+	/** 어제자 날짜 이미지 리스트 */
+	public List<AttachImageVO> checkFileList();
+	
+	/** 지정 상품 이미지 정보 얻기 */
+	public List<AttachImageVO> getAttachInfo(int giftId);	
+	
+	/** 주문 상품 리스트 */
+	public List<OrderDTO> getOrderList(Criteria cri);	
+	
+	/** 주문 총 갯수 */
+	public int getOrderTotal(Criteria cri);
 	
 }

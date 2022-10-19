@@ -9,9 +9,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import edu.hi.mapper.AdminMapper;
+import edu.hi.model.AttachImageVO;
 import edu.hi.model.CateVO;
 import edu.hi.model.Criteria;
 import edu.hi.model.GiftVO;
+import edu.hi.model.OrderDTO;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -106,5 +108,26 @@ public class AdminServiceImpl implements AdminService {
 		
 		return adminMapper.goodsDelete(giftId);
 	}	
+	
+	/** 지정 상품 이미지 정보 얻기 */
+	@Override
+	public List<AttachImageVO> getAttachInfo(int giftId) {
+		
+		log.info("getAttachInfo........");
+		
+		return adminMapper.getAttachInfo(giftId);
+	}
+	
+	/** 주문 상품 리스트 */
+	@Override
+	public List<OrderDTO> getOrderList(Criteria cri) {
+		return adminMapper.getOrderList(cri);
+	}
+	
+	/** 주문 총 갯수 */
+	@Override
+	public int getOrderTotal(Criteria cri) {
+		return adminMapper.getOrderTotal(cri);
+	}
 	
 }

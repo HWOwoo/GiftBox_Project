@@ -82,7 +82,7 @@
 				<li> <a href="/admin/main"><img src="img/gear.png" title="관리자" ></a> </li>
 				</c:if>
                 
-                <li> <a href="#"> <img src="img/image__header-cart.svg"> </a> </li>
+                <li> <a href="/cart/${member.memberId}"> <img src="img/image__header-cart.svg"> </a> </li>
                 <li> <a href="#"> <img src="img/image__header-recent.svg"> </a> </li>
             </ul>
           </nav>
@@ -94,7 +94,7 @@
             <a href="javascript:void(0)" class="dropbtn" onclick="myFunction()">
             전체 카테고리</a>
             <div class="dropdown-content" id="myDropdown">
-	            <a href="/search?type=C&cateCode=101000">패션</a>
+	            <a class="dropdown-menu1">패션</a>
 	            <a href="/search?type=C&cateCode=102000">스포츠</a>
 				<a href="/search?type=C&cateCode=103000">생활용품</a>
 	            <a href="/search?type=C&cateCode=104000">도서</a>

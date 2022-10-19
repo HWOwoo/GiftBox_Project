@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="edu.hi.mapper.ReplyMapper">
+    
+      	<!-- 댓글등록 -->
+  	<insert id="enrollReply">
+  	
+  		insert into gift_reply(replyId, giftId, memberId, content, rating) values(NO_REPLY.NEXTVAL,#{giftId}, #{memberId}, #{content}, #{rating})
+  	
+  	</insert>
+    
+	<select id="checkReply" resultType="integer">
+	
+		select replyId from gift_reply 
+		where memberId = #{memberId} and giftId = #{giftId}
+	
+	</select> 
+    
+  	<!-- 댓글 페이징 -->
+  	<select id="getReplyList" resultType="edu.hi.model.ReplyDTO">
+  	
+  		<![CDATA[
+		select * from(  		
+			select rownum as rn, replyId, giftId, memberId, content, rating, regDate
+			from gift_reply
+			where rownum <= #{pageNum} * #{amount}  and giftId = #{giftId}	
+			order by regDate desc  	
+  			)
+  		where rn > (#{pageNum} -1) * #{amount}
+  		]]>	
+  		
+  	</select>
+  	
+  	<select id="getReplyTotal" resultType="int">
+  	
+  		select count(*)
+  		from gift_reply
+  		where giftId = #{giftId}
+  	
+  	</select>    
+  </mapper>

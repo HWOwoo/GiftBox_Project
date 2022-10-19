@@ -1,12 +1,9 @@
 package edu.hi.mapper;
 
-import java.util.List;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import edu.hi.model.Criteria;
 import edu.hi.model.GiftVO;
 
 @SpringBootTest
@@ -55,13 +52,13 @@ class GiftMapperTests {
 //		//
 //		Criteria cri = new Criteria();
 //		String type = "A";
-//		String keyword = "김용준";		// DB에 등록된 작가 데이터
-//		String catecode = "";
+////		String keyword = "김용준";		// DB에 등록된 작가 데이터
+////		String catecode = "";
 //		
 //		cri.setType(type);
 //		cri.setKeyword(keyword);
 //		cri.setShopArr(mapper.getShopIdList(keyword));
-//		cri.setCateCode(catecode);
+////		cri.setCateCode(catecode);
 //		
 //		List<GiftVO> list = mapper.getGoodsList(cri);
 //		
@@ -98,23 +95,23 @@ class GiftMapperTests {
 //	
 	/* 검색 (동적 쿼리 적용) - 카테고리*/
 	
-	@Test 
-	public void getGoodsListTest3() {
-		Criteria cri = new Criteria();
-		String type = "C";
-		String keyword = "";
-		String catecode = "101000";		
-		
-		cri.setType(type);
-		cri.setKeyword(keyword);
-		cri.setShopArr(mapper.getShopIdList(keyword));
-		cri.setCateCode(catecode);
-		
-		List<GiftVO> list = mapper.getGoodsList(cri);
-		
-		System.out.println("cri : " + cri);
-		System.out.println("list : " + list);
-	}
+//	@Test 
+//	public void getGoodsListTest3() {
+//		Criteria cri = new Criteria();
+//		String type = "C";
+//		String keyword = "";
+//		String catecode = "101001";		
+//		
+//		cri.setType(type);
+//		cri.setKeyword(keyword);
+//		cri.setShopArr(mapper.getShopIdList(keyword));
+//		cri.setCateCode(catecode);
+//		
+//		List<GiftVO> list = mapper.getGoodsList(cri);
+//		
+//		System.out.println("cri : " + cri);
+//		System.out.println("list : " + list);
+//	}
 //	
 //	
 //	
@@ -165,4 +162,36 @@ class GiftMapperTests {
 //		
 //
 //	}
+	
+//	/* 카테고리 리스트 */
+//	@Test
+//	public void getCateListTest1() {
+//		
+//		Criteria cri = new Criteria();
+//		
+//		String type = "TC";
+//		String keyword = "김용준";
+//		//String type = "A";
+//		//String keyword = "유홍준";		
+//
+//		cri.setType(type);
+//		cri.setKeyword(keyword);
+//		//cri.setAuthorArr(mapper.getAuthorIdList(keyword));		
+//		
+//		String[] cateList = mapper.getCateList(cri)		;
+//		for(String codeNum : cateList) {
+//			System.out.println("codeNum ::::: " + codeNum);
+//		}
+//}
+	
+	/* 상품 정보 */
+	@Test
+	public void getGoodsInfo() {
+		int giftId = 161;
+		GiftVO goodsInfo = mapper.getGoodsInfo(giftId);
+		System.out.println("===========================");
+		System.out.println(goodsInfo);
+		System.out.println("===========================");
+		
+	}
 }

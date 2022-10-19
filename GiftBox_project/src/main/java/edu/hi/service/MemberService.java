@@ -4,7 +4,6 @@ import edu.hi.model.MemberVO;
 
 public interface MemberService {
 	
-	
 	/** 회원가입 */
 	public void memberJoin(MemberVO member) throws Exception;
 	
@@ -13,5 +12,8 @@ public interface MemberService {
 	
     /** 로그인 */
     public MemberVO memberLogin(MemberVO member) throws Exception;
-	
+    
+	/** 주문자 정보 */
+	public MemberVO getMemberInfo(String memberId);
+    
 }

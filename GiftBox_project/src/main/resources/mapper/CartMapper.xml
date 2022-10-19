@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="edu.hi.mapper.CartMapper">
+    
+    <!-- 카트 추가 -->
+	<insert id="addCart">
+	
+		insert into gift_cart(cartId,memberId, giftId, giftCount)
+		values(NO_CART.NEXTVAL,#{memberId}, #{giftId}, #{giftCount}) 
+	
+	</insert>
+	
+	<!-- 카트 삭제 -->
+	<delete id="deleteCart">
+	
+		delete from gift_cart where cartId = #{cartId}
+	
+	</delete>
+    
+ 	<!-- 카트 수량 수정 -->
+	<update id="modifyCount">
+	
+		update gift_cart set giftCount=#{giftCount} where cartId = #{cartId}
+	
+	</update>   
+ 
+	<!-- 카트 목록 -->
+	<select id="getCart" resultType="edu.hi.model.CartDTO">
+	
+		select a.cartId, a.memberId, a.giftId, a.giftCount, b.giftName, b.giftPrice, b.giftDiscount
+		from gift_cart a left outer join gift_product b on a.giftId = b.giftId
+		where memberId = #{memberId}	
+	
+	</select>
+	
+		<!-- 카트 확인 -->
+	<select id="checkCart" resultType="edu.hi.model.CartDTO">
+	
+		select * from gift_cart 
+		where memberId = #{memberId} and giftId = #{giftId}
+	
+	</select>
+
+	<delete id="deleteOrderCart">
+	
+		delete from gift_cart where memberId = #{memberId} and giftId = #{giftId}
+	
+	</delete>
+	    
+  </mapper>
