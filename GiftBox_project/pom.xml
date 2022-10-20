@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>edu.hi</groupId>
-	<artifactId>ex</artifactId>
+	<artifactId>demo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
-	<name>spring_boot_hjs_board_mybatis</name>
+	<packaging>jar</packaging>
+	<name>Demo project for Spring Boot</name>
 	<description>스프링 마이 바티스 게시판</description>
 	<properties>
 		<java.version>11</java.version>
