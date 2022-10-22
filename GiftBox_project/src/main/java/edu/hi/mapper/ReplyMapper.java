@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import edu.hi.model.Criteria;
 import edu.hi.model.ReplyDTO;
+import edu.hi.model.UpdateReplyDTO;
 
 @Mapper
 public interface ReplyMapper {
@@ -21,5 +22,14 @@ public interface ReplyMapper {
 	
 	/** 댓글 총 갯수(페이징) */
 	public int getReplyTotal(int giftId);
+	
+	/** 댓글 삭제 */
+	public int deleteReply(int replyId);
+	
+	/** 평점 평균 구하기 */
+	public Double getRatingAverage(int giftId);
+	
+	/** 평점 평균 반영하기 */
+	public int updateRating(UpdateReplyDTO dto);
 	
 }

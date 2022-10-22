@@ -5,6 +5,7 @@ import java.util.List;
 import edu.hi.model.CateFilterDTO;
 import edu.hi.model.Criteria;
 import edu.hi.model.GiftVO;
+import edu.hi.model.SelectDTO;
 
 public interface GiftService {
 
@@ -28,5 +29,8 @@ public interface GiftService {
 	
 	/** 상품 id 이름 */
 	public GiftVO getGiftIdName(int giftId);
+	
+	/** 평점순 상품 정보 */
+	public List<SelectDTO> likeSelect();
 	
 }

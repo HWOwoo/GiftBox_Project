@@ -15,6 +15,7 @@ import edu.hi.model.AttachImageVO;
 import edu.hi.model.CateFilterDTO;
 import edu.hi.model.Criteria;
 import edu.hi.model.GiftVO;
+import edu.hi.model.SelectDTO;
 
 @Service
 public class GiftServiceImpl implements GiftService {
@@ -143,6 +144,25 @@ public class GiftServiceImpl implements GiftService {
 	public GiftVO getGiftIdName(int giftId) {
 		
 		return giftMapper.getGiftIdName(giftId);
+	}
+	
+	@Override
+	public List<SelectDTO> likeSelect() {
+		
+		List<SelectDTO> list = giftMapper.likeSelect();
+		
+		list.forEach(dto -> {
+			
+			int giftId = dto.getGiftId();
+			
+			List<AttachImageVO> imageList = attachMapper.getAttachList(giftId);
+			
+			dto.setImageList(imageList);
+			
+		});				
+		
+		
+		return list;		
 	}
 	
 }

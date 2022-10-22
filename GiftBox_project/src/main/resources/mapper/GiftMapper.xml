@@ -175,4 +175,16 @@
 	
 	</select>		
 	
+	<select id="likeSelect" resultType="edu.hi.model.SelectDTO">
+	
+		select * from
+		(select rownum as rn, giftId, giftName, ratingAvg, (select cateName from gift_bcate where gift_product.cateCode = gift_bcate.cateCode) as cateName
+		from gift_product
+		order by ratingAvg desc nulls last)
+		<![CDATA[
+		where rn < 9
+		]]>	
+	
+	</select>
+	
   </mapper>

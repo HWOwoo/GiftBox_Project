@@ -9,9 +9,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Main</title>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="js/main.js">
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <script>
         /* When the user clicks on the button, 
         toggle between hiding and showing the dropdown content */
@@ -119,7 +121,6 @@
 </div>    
 
 
-
     <div class="powercouple">
         <h5> SS'22 POWER COUPLE </h5>
         <h2> 
@@ -150,6 +151,27 @@
         </h3>
         <a href="#" class="button">  </a>
     </div>
+    
+    	<div class="slide_div_wrap">
+		<div class="slide_div">
+			<div>
+				<a>
+					<img src="img/main-slider-imag01.jpg" style="width: 100%; height: 550px;">
+				</a>
+			</div>
+			<div>
+				<a>
+					<img src="img/main-slider-imag02.jpg" style="width: 100%; height: 550px;">
+				</a>
+			</div>
+			<div>
+				<a>
+					<img src="img/main-slider-imag03.jpg" style="width: 100%; height: 550px;">
+				</a>
+			</div>				
+		</div>	
+	</div>
+    
 
 
 
@@ -160,60 +182,35 @@
 
         </div> 
 
-        <div class=" shop_post">
+	<div class="ls_wrap">
+		<div class="ls_div_subject">
+			평점순 상품
+		</div>
+			<div class="ls_div">
+				<c:forEach items="${ls}" var="ls">
+					<a href="/goodsDetail/${ls.giftId}">
+						<div class="ls_div_content_wrap">
+							<div class="ls_div_content" style="background-color: hsl(34, 57%, 70%);">
+								<div class="image_wrap" data-giftid="${ls.imageList[0].giftId}" data-path="${ls.imageList[0].uploadPath}" data-uuid="${ls.imageList[0].uuid}" data-filename="${ls.imageList[0].fileName}">
+									<img style="width:100%; height:160px">
+								</div>	
+											
+							<div class="ls_category">
+								${ls.cateName}
+							</div>
+							<div class="ls_rating">
+								${ls.ratingAvg}
+							</div>
+							<div class="ls_giftName">
+								${ls.giftName}
+							</div>		
+															</div>			
 
-        <div class="shop_first_blog_post">
-                <img src="img/ame.png"> <br>
-            <div class="blog_first_category"> 
-                Character 
-            <span class="blog_first_category_new">
-                new!
-            </span>
-            </div>
-            <div class="blog_first_title">
-                Amelia
-            </div>
-            <br>
-            <a href="#" class="post_button"> 
-                Replay 
-            </a>
-        </div>
-
-        <div class="shop_sec_blog_post">
-                <img src="img/same.webp"> <br>
-            <div class="blog_sec_category"> 
-                Character 
-            <span class="blog_sec_category_new">
-                new!
-            </span>
-            </div>
-            <div class="blog_sec_title">
-                Same
-            </div>
-            <br>
-            <a href="#" class="post_button"> 
-                Replay 
-            </a>
-        </div>
-
-        <div class="shop_third_blog_post">
-                <img src="img/muner.png"> <br>
-            <div class="blog_third_category"> 
-                Character 
-            <span class="blog_third_category_new">
-                new!
-            </span>
-            </div>
-            <div class="blog_third_title">
-                Muner
-            </div>
-            <br>
-            <a href="shop.html" class="post_button"> 
-                Replay 
-            </a>
-        </div>
-
-    </div>
+					</div>
+					</a>					
+				</c:forEach>					
+			</div>
+		</div>
     </div>
 
     <footer>
@@ -252,18 +249,55 @@
     
 <script>
 
-		/* gnb_area 로그아웃 버튼 작동 */
-		$("#gnb_logout_button").click(function(){
-		    //alert("버튼 작동");
-		    $.ajax({
-		        type:"POST",
-		        url:"/member/logout.do",
-		        success:function(data){
-		            alert("로그아웃 성공");
-		            document.location.reload();     
-		        } 
-		    }); // ajax 
+	$(document).ready(function(){
+		
+		$(".slide_div").slick(
+			{
+				dots: true,
+				autoplay : true,
+				autoplaySpeed: 5000
+			}
+		);
+		
+		$(".ls_div").slick({
+		      arrows : true,         // 옆으로 이동하는 화살표 표시 여부
+		      dots : true,         // 스크롤바 아래 점으로 페이지네이션 여부
+			slidesToShow: 5,
+			slidesToScroll: 1
 		});
+		
+		/* 이미지 삽입 */
+		$(".image_wrap").each(function(i, obj){
+			
+			const bobj = $(obj);
+			
+			if(bobj.data("giftid")){
+				const uploadPath = bobj.data("path");
+				const uuid = bobj.data("uuid");
+				const fileName = bobj.data("filename");
+				
+				const fileCallPath = encodeURIComponent(uploadPath + "/s_" + uuid + "_" + fileName);
+				
+				$(this).find("img").attr('src', '/display?fileName=' + fileCallPath);
+			} else {
+				$(this).find("img").attr('src', '/img/exbox.png');
+			}
+			
+		});
+	});
+
+	/* gnb_area 로그아웃 버튼 작동 */
+	$("#gnb_logout_button").click(function(){
+	    //alert("버튼 작동");
+	    $.ajax({
+	        type:"POST",
+	        url:"/member/logout.do",
+	        success:function(data){
+	            alert("로그아웃 성공");
+	            document.location.reload();     
+	        } 
+	    }); // ajax 
+	});
 
 </script>
 

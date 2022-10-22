@@ -28,7 +28,7 @@
 }
 .line{
    	width: 100%;
-   	border-top:1px solid #c6c6cf;  		
+	border-top:2px solid gray; 		
 }
 .ct_right_area{
 	float: left;
@@ -51,6 +51,9 @@
 .price{
 	line-height: 30px;
   	padding: 2% 0 2% 3%; 	
+}
+.point-div {
+	padding: 2% 0 2% 3%;
 }
 .discount_price_number{
 line-height: 30px;
@@ -106,18 +109,19 @@ font-weight: bold;
  
 .product-detail {
 	display: flex;
+	margin-top: 5%;
 	width:100%;
 	height: 60px;
     justify-content: space-around;
     align-items: center;
     font-size: 20px;
-    text-decoration: none;
-    color: black;
+    border: 1px gray solid;
 }
   	
 .content_middle{
 	width: 100%;
     min-height: 600px;  	
+    text-align: center;
 }
 .gift_intro{
 	width: 80%;
@@ -130,11 +134,16 @@ font-weight: bold;
 	margin-top: 40px;
 	margin-bottom: 40px;
 }
- 	
+
 .content_bottom{
+	display: flex;
 	width: 100%;
 	min-height: 400px;
-    background-color: #e7dbdb;  	
+    flex-direction: column;
+}
+
+.bottom-line{
+	border-top: 2px gray solid;
 }
 
  /* 리뷰쓰기 버튼 */
@@ -142,7 +151,7 @@ font-weight: bold;
   	padding : 10px;
   }
   .reply_button_wrap button{
-	background-color: #365fdd;
+	background-color: black;
     color: white;
     font-weight: bold;
     font-size: 15px;
@@ -153,11 +162,6 @@ font-weight: bold;
   	background-color: #1347e7;
   }
   
-  /* 리뷰 영역 */
-  	.content_bottom{
-  		width: 80%;
-  		margin : auto;
-  	}
 	.reply_content_ul{
 		list-style: none;
 	}
@@ -188,9 +192,14 @@ font-weight: bold;
 	.reply_line{
 		width : 80%;
 		margin : auto;
-		border-top:1px solid #c6c6cf;  	
+		border-top:2px solid gray;  	
 	}
-	
+	.reply_subject{
+		display: flex;
+		flex-direction: row;
+	    align-items: center;
+	    justify-content: space-between;
+	}
 	/* 리뷰 제목 */
 	.reply_subject h2{
 		padding: 15px 0 5px 5px;

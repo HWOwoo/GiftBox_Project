@@ -46,6 +46,7 @@ public class BookController {
 		
 		model.addAttribute("cate1", giftService.getCateCode1());
 		model.addAttribute("cate2", giftService.getCateCode2());
+		model.addAttribute("ls", giftService.likeSelect());
 		
 	}
 	

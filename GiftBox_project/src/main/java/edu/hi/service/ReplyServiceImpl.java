@@ -8,6 +8,7 @@ import edu.hi.model.Criteria;
 import edu.hi.model.PageDTO;
 import edu.hi.model.ReplyDTO;
 import edu.hi.model.ReplyPageDTO;
+import edu.hi.model.UpdateReplyDTO;
 
 @Service
 public class ReplyServiceImpl implements ReplyService {
@@ -20,6 +21,8 @@ public class ReplyServiceImpl implements ReplyService {
 	public int enrollReply(ReplyDTO dto) {
 		
 		int result = replyMapper.enrollReply(dto);
+		
+		setRating(dto.getGiftId());
 		
 		return result;
 	}
@@ -45,6 +48,35 @@ public class ReplyServiceImpl implements ReplyService {
 		dto.setPageInfo(new PageDTO(cri, replyMapper.getReplyTotal(cri.getGiftId())));
 		
 		return dto;
+	}
+	
+	@Override
+	public int deleteReply(ReplyDTO dto) {
+		
+		int result = replyMapper.deleteReply(dto.getReplyId()); 
+		
+		setRating(dto.getGiftId());
+		
+		return result;
+	}
+	
+	public void setRating(int giftId) {
+		
+		Double ratingAvg = replyMapper.getRatingAverage(giftId);	
+		
+		if(ratingAvg == null) {
+			ratingAvg = 0.0;
+		}	
+		
+		ratingAvg = (double) (Math.round(ratingAvg*10));
+		ratingAvg = ratingAvg / 10;
+		
+		UpdateReplyDTO urd = new UpdateReplyDTO();
+		urd.setGiftId(giftId);
+		urd.setRatingAvg(ratingAvg);	
+		
+		replyMapper.updateRating(urd);	
+		
 	}
 
 }

@@ -39,5 +39,30 @@
   		from gift_reply
   		where giftId = #{giftId}
   	
-  	</select>    
+  	</select>   
+  	
+  	  	<!-- 댓글 삭제 -->
+  	<delete id="deleteReply">
+  	
+  		DELETE FROM gift_reply
+  		WHERE replyId = #{replyId}
+  		
+  	</delete>
+  	
+   	<select id="getRatingAverage" resultType="double">
+  	
+  		select avg(rating)
+  		from gift_reply
+  		where giftId = #{giftId}
+  	
+  	</select>
+
+	<update id="updateRating">
+	
+		update gift_product
+		set ratingAvg = #{ratingAvg}
+		where giftId = #{giftId}
+	
+	</update>
+  	 
   </mapper>

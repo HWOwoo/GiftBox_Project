@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import edu.hi.model.CateFilterDTO;
 import edu.hi.model.Criteria;
 import edu.hi.model.GiftVO;
+import edu.hi.model.SelectDTO;
 
 @Mapper
 public interface GiftMapper {
@@ -37,5 +38,8 @@ public interface GiftMapper {
 	
 	/** 상품 id 이름 */
 	public GiftVO getGiftIdName(int giftId);
+	
+	/** 평점순 상품 정보 */
+	public List<SelectDTO> likeSelect();
 	
 }
