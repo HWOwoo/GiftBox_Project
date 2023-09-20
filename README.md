@@ -29,8 +29,12 @@
 ## 로드맵
 
 - [x] View단 완성
+   - [x] JSP를 이용하기 전 정적 페이지 완성 
+- [x] Model 구성 (mybaits 사용)
 - [x] Controller 로직 구성
+   - [x] html로 구성된 페이지에 JSP를 이용하여 
 - [x] DB 테스트
+   - [x] 정상적인 데이터 INSERT
 - [x] 버그 테스트
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -52,6 +56,7 @@ Maven과 JSP Mybatis를 사용한 프로젝트는 조금 오래된 느낌이 있
  * 주문 목록을 조회할 수 있음
  * 주문 상태를 조회할 수 있음 ( 배송중, 배송준비 )
  * 회원을 관리할수 있음
+
 * 유저 페이지
  * 상품을 조회할 수 있음
  * 상품을 구매(api)할 수 있음
@@ -61,6 +66,13 @@ Maven과 JSP Mybatis를 사용한 프로젝트는 조금 오래된 느낌이 있
    
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+## 프로젝트 완료 KPT 회고
+
+* KEEP
+   * 프로젝트 구성 중 요구서, 명확한 기술서를 작성하고 개발을 진행하니 개발 방향이 뚜렷하고 효율적인 개발이 가능했다.
+
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
